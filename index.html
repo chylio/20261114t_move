@@ -1,0 +1,581 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="T-MOVE 訓練移轉顧問：策略對齊、學習移轉、人才文化、成效驗證四大顧問服務。">
+<title>T-MOVE 訓練移轉顧問</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600;900&display=swap">
+<style>
+html{-webkit-text-size-adjust:100%}
+body{margin:0}
+img{max-width:100%}
+[hidden]{display:none!important}
+
+/* Layout: a night-time route map. The hero is the network (Chiayi → world); every section below reuses the "station on a line" motif. Single deliberate dark theme. */
+:root{
+  color-scheme: dark;
+  --ink:#0B1626;
+  --ink-2:#102037;
+  --ink-3:#162A47;
+  --line:#253B5E;
+  --paper:#ECE5D3;
+  --muted:#9AA6BA;
+  --gold:#D9AE5B;
+  --gold-hi:#F4D795;
+  --teal:#72BDB5;
+  --coral:#E3916A;
+  --lilac:#AE9FDB;
+  --f-display:"Noto Serif TC","Songti TC","PMingLiU",serif;
+  --f-brand:"Big Shoulders Display","Arial Narrow",Impact,sans-serif;
+  --f-body:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+  --gut-l:max(16px, env(safe-area-inset-left, 0px));
+  --gut-r:max(16px, env(safe-area-inset-right, 0px));
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+body{background:var(--ink);color:var(--paper);font-family:var(--f-body);font-size:16px;line-height:1.75;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--ink)}
+h1,h2,h3{text-wrap:balance;margin:0}
+p{margin:0}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--gold-hi);outline-offset:3px;border-radius:4px}
+.wrap{max-width:1180px;margin:0 auto;padding-left:var(--gut-l);padding-right:var(--gut-r)}
+.mono{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+
+/* nav */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:color-mix(in srgb,var(--ink) 86%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;height:60px}
+.brand{display:flex;align-items:baseline;gap:10px;text-decoration:none;color:var(--paper)}
+.brand b{font-family:var(--f-brand);font-weight:800;font-size:26px;letter-spacing:.04em}
+.brand b i{font-style:normal;color:var(--gold)}
+.brand span{font-family:var(--f-mono);font-size:10px;letter-spacing:.14em;color:var(--muted)}
+.nav nav{display:flex;gap:4px}
+.nav nav a{color:var(--muted);text-decoration:none;font-size:14px;padding:6px 12px;border-radius:999px}
+.nav nav a:hover{color:var(--paper);background:var(--ink-3)}
+@media (max-width:640px){.nav nav{display:none}.brand span{display:none}}
+
+/* hero */
+.hero{position:relative;border-bottom:1px solid var(--line);background:radial-gradient(120% 90% at 62% 45%,#13294A 0%,var(--ink) 62%)}
+.map{position:relative;height:clamp(560px,52vw,760px)}
+.map canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.hud{position:absolute;top:20px;right:var(--gut-r);display:flex;flex-direction:column;align-items:flex-end;gap:6px;text-align:right;pointer-events:none}
+.hud .coord{font-family:var(--f-mono);font-size:12px;color:var(--gold-hi);letter-spacing:.06em}
+.hud .coord small{display:block;color:var(--muted);font-size:11px}
+.replay{pointer-events:auto;margin-top:4px;background:transparent;border:1px solid var(--line);color:var(--muted);font-family:var(--f-mono);font-size:11px;letter-spacing:.1em;padding:5px 10px;border-radius:999px;cursor:pointer}
+.replay:hover{color:var(--gold-hi);border-color:var(--gold)}
+.hero-copy{position:absolute;left:0;right:0;bottom:0;pointer-events:none;background:linear-gradient(to top,var(--ink) 8%,color-mix(in srgb,var(--ink) 70%,transparent) 45%,transparent)}
+.hero-copy .wrap{padding-block:48px 44px;display:grid;gap:18px;max-width:1180px}
+.hero-copy .inner{max-width:620px;display:grid;gap:18px;pointer-events:auto}
+.wordmark{font-family:var(--f-brand);font-weight:800;font-size:clamp(64px,10vw,124px);line-height:.86;letter-spacing:.01em}
+.wordmark i{font-style:normal;color:var(--gold)}
+.tagline{font-family:var(--f-mono);font-size:13px;letter-spacing:.22em;color:var(--gold-hi)}
+.lede{color:#CFD5DF;font-size:16px;max-width:60ch}
+.ctas{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px}
+.btn{display:inline-flex;align-items:center;gap:8px;text-decoration:none;border-radius:999px;padding:11px 20px;font-size:15px;font-weight:500;border:1px solid var(--line);color:var(--paper);background:color-mix(in srgb,var(--ink-2) 80%,transparent);transition:border-color .2s,background .2s,transform .2s}
+.btn:hover{border-color:var(--gold);transform:translateY(-1px)}
+.btn.primary{background:var(--gold);color:#1A1405;border-color:var(--gold);font-weight:700}
+.btn.primary:hover{background:var(--gold-hi)}
+.btn svg{width:14px;height:14px}
+@media (max-width:760px){
+  .map{height:360px}
+  .hero-copy{position:static;background:none}
+  .hero-copy .wrap{padding-block:8px 40px}
+  .hud{top:10px}
+  .hud .coord:nth-child(2),.hud .coord small{display:none}
+}
+
+/* sections */
+section.block{padding-block:96px 24px}
+.sec-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:32px;align-items:end;margin-bottom:48px}
+.sec-head h2{font-family:var(--f-display);font-weight:900;font-size:clamp(30px,4vw,46px);line-height:1.2}
+.sec-head h2 em{font-style:normal;color:var(--gold)}
+.sec-head p{color:var(--muted);max-width:58ch}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.18em;color:var(--gold);margin-bottom:12px;text-transform:uppercase}
+@media (max-width:820px){.sec-head{grid-template-columns:1fr;gap:14px}section.block{padding-block:72px 16px}}
+
+/* route of services */
+.route{position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px}
+.route::before{content:"";position:absolute;left:0;right:0;top:27px;height:3px;background:linear-gradient(90deg,var(--gold),var(--coral),var(--lilac),var(--teal));opacity:.85;border-radius:3px}
+.stop{position:relative;display:grid;gap:12px;align-content:start;min-width:0}
+.stop .pin{width:57px;height:57px;border-radius:50%;background:var(--ink);border:3px solid var(--c);display:grid;place-items:center;font-family:var(--f-mono);font-weight:600;font-size:13px;color:var(--c);position:relative;z-index:1}
+.stop .phase{font-family:var(--f-mono);font-size:12px;letter-spacing:.12em;color:var(--c)}
+.stop h3{font-family:var(--f-display);font-size:24px;font-weight:900;line-height:1.3}
+.stop h3 small{display:block;font-family:var(--f-mono);font-size:11px;font-weight:400;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;margin-top:4px}
+.stop p{color:#C5CCD8;font-size:15px}
+.stop .who{display:flex;align-items:center;gap:10px;margin-top:4px;background:none;border:1px solid var(--line);border-radius:999px;padding:6px 14px 6px 6px;cursor:pointer;justify-self:start;transition:border-color .2s}
+.stop .who:hover{border-color:var(--c)}
+.stop .who .av{width:28px;height:28px;border-radius:50%;background:var(--c);color:#14110A;display:grid;place-items:center;font-family:var(--f-display);font-weight:900;font-size:14px}
+.stop .who span{font-size:14px}
+@media (max-width:900px){
+  .route{grid-template-columns:1fr;gap:34px;padding-left:4px}
+  .route::before{left:31px;right:auto;top:10px;bottom:10px;width:3px;height:auto;background:linear-gradient(180deg,var(--gold),var(--coral),var(--lilac),var(--teal))}
+  .stop{grid-template-columns:57px minmax(0,1fr);column-gap:18px}
+  .stop .pin{grid-row:span 5}
+}
+
+/* faculty */
+.faculty{display:grid;grid-template-columns:minmax(0,320px) minmax(0,1fr);gap:28px;align-items:start}
+.roster{display:grid;gap:10px;position:sticky;top:84px}
+.rbtn{display:grid;grid-template-columns:48px minmax(0,1fr);gap:14px;align-items:center;text-align:left;background:var(--ink-2);border:1px solid var(--line);border-radius:14px;padding:12px 14px;cursor:pointer;transition:border-color .2s,background .2s}
+.rbtn:hover{border-color:color-mix(in srgb,var(--c) 60%,var(--line))}
+.rbtn[aria-selected="true"]{border-color:var(--c);background:var(--ink-3);box-shadow:inset 3px 0 0 var(--c)}
+.rbtn .av{width:48px;height:48px;border-radius:50%;border:2px solid var(--c);display:grid;place-items:center;font-family:var(--f-display);font-weight:900;font-size:20px;color:var(--c)}
+.rbtn b{display:block;font-size:17px;font-weight:700}
+.rbtn small{display:block;color:var(--muted);font-size:13px;line-height:1.5}
+.profile{background:var(--ink-2);border:1px solid var(--line);border-radius:20px;padding:clamp(22px,3.4vw,40px);display:grid;gap:30px;min-width:0;position:relative;overflow:hidden}
+.profile::after{content:attr(data-big);position:absolute;right:-10px;top:-40px;font-family:var(--f-display);font-weight:900;font-size:260px;line-height:1;color:var(--c);opacity:.06;pointer-events:none}
+.p-top{display:grid;grid-template-columns:auto minmax(0,1fr);gap:22px;align-items:center}
+.p-av{width:96px;height:96px;border-radius:50%;background:radial-gradient(circle at 35% 30%,color-mix(in srgb,var(--c) 40%,var(--ink-3)),var(--ink));border:3px solid var(--c);display:grid;place-items:center;font-family:var(--f-display);font-weight:900;font-size:42px;color:var(--paper)}
+.p-role{font-family:var(--f-mono);font-size:12px;letter-spacing:.14em;color:var(--c);text-transform:uppercase}
+.p-name{font-family:var(--f-display);font-weight:900;font-size:clamp(30px,4vw,42px);line-height:1.15;margin-top:2px}
+.p-pos{color:#C5CCD8;margin-top:8px;max-width:56ch}
+.legs{display:grid;gap:0;position:relative}
+.leg{display:grid;grid-template-columns:28px minmax(0,1fr);gap:18px;position:relative;padding-bottom:26px}
+.leg:last-child{padding-bottom:0}
+.leg::before{content:"";position:absolute;left:13px;top:22px;bottom:-4px;width:2px;background:var(--c);opacity:.5}
+.leg:last-child::before{display:none}
+.leg .dot{width:28px;height:28px;border-radius:50%;border:2px solid var(--c);background:var(--ink-2);display:grid;place-items:center;position:relative;z-index:1}
+.leg .dot::after{content:"";width:10px;height:10px;border-radius:50%;background:var(--c)}
+.leg:first-child .dot::after{background:transparent;border:2px solid var(--c);width:6px;height:6px}
+.leg h4{margin:0 0 6px;font-size:13px;font-family:var(--f-mono);letter-spacing:.14em;color:var(--c);font-weight:600}
+.leg h4 span{color:var(--muted);font-weight:400;margin-left:8px;letter-spacing:.04em}
+.leg p{color:#DCE1E8;max-width:62ch}
+.leg p + p{margin-top:8px}
+.slogan{border-top:1px dashed var(--line);padding-top:26px;font-family:var(--f-display);font-weight:900;font-size:clamp(22px,2.8vw,30px);line-height:1.45;color:var(--paper)}
+.slogan::before{content:"「";color:var(--c)}
+.slogan::after{content:"」";color:var(--c)}
+.p-nav{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.p-nav button{background:none;border:1px solid var(--line);border-radius:999px;padding:7px 14px;cursor:pointer;color:var(--muted);font-size:14px}
+.p-nav button:hover{color:var(--paper);border-color:var(--c)}
+.fade-in{animation:fadeUp .5s ease both}
+@keyframes fadeUp{from{opacity:.0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion: reduce){.fade-in{animation:none}}
+@media (max-width:900px){
+  .faculty{grid-template-columns:1fr}
+  .roster{position:static}
+  .roster{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:480px){
+  .roster{grid-template-columns:1fr 1fr;gap:8px}
+  .rbtn{grid-template-columns:1fr;justify-items:start;gap:8px}
+  .rbtn small{display:none}
+  .p-top{grid-template-columns:1fr}
+  .p-av{width:72px;height:72px;font-size:32px}
+}
+
+/* finale */
+.finale{position:relative;overflow:hidden;border-radius:24px;border:1px solid var(--line);background:radial-gradient(90% 120% at 50% 0%,#17325A 0%,var(--ink-2) 70%);padding-block:clamp(48px,7vw,84px);padding-inline:clamp(20px,5vw,64px);display:grid;justify-items:center;text-align:center;gap:18px}
+.finale .stations{display:flex;align-items:center;gap:0;margin-bottom:6px}
+.finale .stations i{width:12px;height:12px;border-radius:50%;border:2px solid var(--c);background:var(--ink)}
+.finale .stations b{width:42px;height:2px;background:linear-gradient(90deg,var(--a),var(--b))}
+.finale .ey{font-family:var(--f-mono);font-size:12px;letter-spacing:.2em;color:var(--gold)}
+.finale h2{font-family:var(--f-display);font-weight:900;font-size:clamp(28px,4.4vw,52px);line-height:1.3}
+.finale h2 span{color:var(--gold)}
+.finale p{color:#CFD5DF;font-size:17px}
+.go{margin-top:14px;background:var(--gold);color:#1A1405;border:0;border-radius:12px;padding:16px 28px;font-family:var(--f-brand);font-weight:800;font-size:clamp(18px,2.4vw,24px);letter-spacing:.06em;cursor:default;box-shadow:0 10px 30px rgba(217,174,91,.22)}
+.film{padding-block:72px 0}
+.film-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:12px 24px;margin-bottom:22px}
+.film-head h2{font-family:var(--f-display);font-weight:900;font-size:clamp(26px,3.4vw,38px);line-height:1.25}
+.film-head h2 em{font-style:normal;color:var(--gold)}
+.film-head .meta{font-family:var(--f-mono);font-size:12px;letter-spacing:.12em;color:var(--muted)}
+.player{position:relative;border-radius:20px;overflow:hidden;border:1px solid var(--line);background:#000;aspect-ratio:16/9;max-width:100%;box-shadow:0 30px 80px rgba(0,0,0,.45)}
+.player video{width:100%;height:100%;display:block;object-fit:cover;background:#000}
+.player .play{position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:flex-start;gap:16px;padding:clamp(16px,3vw,32px);border:0;cursor:pointer;color:var(--paper);background:linear-gradient(to top,rgba(11,22,38,.7),rgba(11,22,38,0) 45%)}
+.player .play .ring{width:clamp(52px,7vw,76px);height:clamp(52px,7vw,76px);flex:none;border-radius:50%;background:var(--gold);display:grid;place-items:center;box-shadow:0 0 0 0 rgba(217,174,91,.5);animation:ring 2.4s infinite;transition:transform .2s,background .2s}
+.player .play:hover .ring{transform:scale(1.06);background:var(--gold-hi)}
+.player .play svg{width:34%;height:34%;margin-left:6%;fill:#1A1405}
+.player .play span:not(.ring){font-family:var(--f-mono);font-size:13px;letter-spacing:.16em;line-height:clamp(52px,7vw,76px);text-shadow:0 1px 8px rgba(0,0,0,.6)}
+@keyframes ring{0%{box-shadow:0 0 0 0 rgba(217,174,91,.45)}100%{box-shadow:0 0 0 22px rgba(217,174,91,0)}}
+@media (prefers-reduced-motion: reduce){.player .play .ring{animation:none}}
+.film-head h2 em{display:inline-block}
+@media (max-width:560px){.player .play span:not(.ring){display:none}}
+footer{border-top:1px solid var(--line);margin-top:96px}
+footer .wrap{padding-block:32px 40px;display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:center;color:var(--muted);font-size:13px}
+</style>
+</head>
+<body>
+
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top"><b>T<i>-</i>MOVE</b><span>LEARNING TRANSFER CONSULTING</span></a>
+    <nav aria-label="主要區塊">
+      <a href="#film">宣傳影片</a>
+      <a href="#team">顧問服務</a>
+      <a href="#faculty">專業講師</a>
+      <a href="#workshop">工作坊</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero" id="top">
+  <div class="map" id="map">
+    <canvas id="globe" aria-label="從台灣嘉義出發、以金色航線連向全球主要城市的地圖"></canvas>
+    <div class="hud">
+      <div class="coord">ORIGIN · 嘉義 CHIAYI, TAIWAN<small>23.48°N · 120.45°E</small></div>
+      <div class="coord"><span id="routeCount">0</span> ROUTES<small>連結全球合作城市</small></div>
+      <button class="replay" id="replay" type="button">↻ 重播航線</button>
+    </div>
+  </div>
+  <div class="hero-copy">
+    <div class="wrap">
+      <div class="inner">
+        <div class="tagline">T-MOVE | LEARNING TRANSFER CONSULTING</div>
+        <h1 class="wordmark">T<i>-</i>MOVE</h1>
+        <p class="lede">T-Move 整合訓練移轉（Training Transfer）、成人學習與組織績效評估的研究觀點，建構以策略對齊、成效驗證、學習移轉及人才文化為核心的四大顧問服務架構，協助組織從學習需求出發，實現工作行為改變與持續績效提升。</p>
+        <div class="ctas">
+          <a class="btn primary" href="#team">認識我們的顧問團隊</a>
+          <a class="btn" href="#faculty">探索專業講師</a>
+          <a class="btn" href="#film" id="heroPlay"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M4 2.5v11l9-5.5z"/></svg> 觀看宣傳影片</a>
+          <a class="btn" href="#workshop">開始訓練移轉工作坊 <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+  <section class="film" id="film">
+    <div class="wrap">
+      <div class="film-head">
+        <div>
+          <div class="eyebrow">Brand Film</div>
+          <h2>從嘉義出發，<em>讓學習走進工作現場</em></h2>
+        </div>
+        <div class="meta">T-MOVE CONSULTING ・ 0:45</div>
+      </div>
+      <div class="player">
+        <video id="promo" preload="metadata" playsinline poster="video/poster.jpg">
+          <source src="video/tmove-promo.mp4" type="video/mp4">
+          你的瀏覽器無法播放這支影片。
+        </video>
+        <button class="play" type="button" id="playPromo" aria-label="播放 T-MOVE 宣傳影片（有聲音）">
+          <span class="ring"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l13-7.5z"/></svg></span>
+          <span>播放宣傳影片 ・ 有聲音</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+<main>
+  <section class="block" id="team">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <div class="eyebrow">Our Consulting Team</div>
+          <h2>一條路線，<em>四個站點</em></h2>
+        </div>
+        <p>學習要真正移轉到工作現場，需要在訓練前、訓練中、回到現場與後續追蹤都有人把關。T-Move 的四位顧問各自負責一個站點，串成一條完整的移轉路線。點選顧問，認識他們的完整介紹。</p>
+      </div>
+      <div class="route" id="route" style="scroll-margin-top:96px"></div>
+      <div class="gallery" id="gallery" aria-label="顧問工作坊介紹卡"></div>
+    </div>
+  </section>
+
+  <section class="block" id="faculty">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <div class="eyebrow">Meet the Faculty</div>
+          <h2>探索<em>專業講師</em></h2>
+        </div>
+        <p>每位講師都用同一段旅程介紹自己：從哪裡出發、帶著什麼專長上路，以及想帶你抵達哪裡。</p>
+      </div>
+      <div class="faculty">
+        <div class="roster" role="tablist" aria-label="講師名單" id="roster"></div>
+        <article class="profile" id="profile" role="tabpanel" aria-live="polite"></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="workshop">
+    <div class="wrap">
+      <div class="finale">
+        <div class="stations" aria-hidden="true"><i style="--c:var(--gold)"></i><b style="--a:var(--gold);--b:var(--coral)"></b><i style="--c:var(--coral)"></i><b style="--a:var(--coral);--b:var(--lilac)"></b><i style="--c:var(--lilac)"></i><b style="--a:var(--lilac);--b:var(--teal)"></b><i style="--c:var(--teal)"></i></div>
+        <div class="ey">T-MOVE LEARNING TRANSFER WORKSHOP</div>
+        <h2>學得會，只是開始。<br><span>用得上，才是價值。</span></h2>
+        <p>從策略到數據，從執行到人才。</p>
+        <p>今天，讓我們一起思考如何讓學習真正走進工作現場。</p>
+        <p class="go">LET'S MAKE LEARNING TRANSFER HAPPEN.</p>
+      </div>
+
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div><b style="font-family:var(--f-brand);font-size:18px;letter-spacing:.04em;color:var(--paper)">T<span style="color:var(--gold)">-</span>MOVE</b>　總部　台灣・嘉義</div>
+    <div>本網站為「學習與訓練移轉」課程專題之虛擬顧問公司，人物與服務皆為課程設定。</div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+
+<script>
+const GEO = {"tw":{"type":"MultiPolygon","coordinates":[[[[121.906,24.949],[121.834,24.872],[121.823,24.855],[121.816,24.831],[121.809,24.806],[121.805,24.779],[121.809,24.753],[121.82,24.699],[121.82,24.686],[121.813,24.672],[121.816,24.644],[121.827,24.623],[121.852,24.608],[121.881,24.605],[121.859,24.598],[121.841,24.59],[121.852,24.573],[121.856,24.551],[121.852,24.531],[121.831,24.519],[121.831,24.5],[121.841,24.482],[121.831,24.473],[121.805,24.461],[121.78,24.433],[121.78,24.397],[121.773,24.38],[121.766,24.348],[121.762,24.336],[121.766,24.323],[121.773,24.313],[121.766,24.301],[121.744,24.281],[121.723,24.252],[121.705,24.238],[121.701,24.225],[121.672,24.201],[121.661,24.193],[121.651,24.173],[121.64,24.13],[121.615,24.091],[121.607,24.076],[121.607,24.061],[121.615,24.043],[121.625,24.031],[121.629,24.016],[121.625,24.002],[121.611,23.982],[121.607,23.97],[121.607,23.948],[121.593,23.892],[121.571,23.831],[121.539,23.693],[121.521,23.659],[121.478,23.435],[121.463,23.343],[121.453,23.327],[121.427,23.293],[121.417,23.276],[121.409,23.254],[121.402,23.215],[121.402,23.18],[121.399,23.146],[121.381,23.11],[121.355,23.092],[121.345,23.075],[121.337,23.055],[121.319,23.026],[121.309,22.98],[121.298,22.958],[121.262,22.908],[121.255,22.898],[121.204,22.857],[121.19,22.844],[121.19,22.812],[121.186,22.791],[121.179,22.779],[121.161,22.758],[121.143,22.742],[121.082,22.703],[121.039,22.663],[121.021,22.648],[121.003,22.6],[120.992,22.584],[120.959,22.548],[120.949,22.526],[120.941,22.484],[120.923,22.425],[120.887,22.366],[120.88,22.346],[120.877,22.29],[120.877,22.237],[120.88,22.055],[120.873,22.03],[120.862,22.009],[120.851,22.001],[120.837,21.988],[120.837,21.957],[120.841,21.925],[120.841,21.905],[120.823,21.928],[120.797,21.947],[120.769,21.959],[120.736,21.966],[120.736,21.944],[120.715,21.937],[120.7,21.949],[120.704,21.981],[120.682,22.015],[120.682,22.03],[120.682,22.079],[120.686,22.091],[120.697,22.102],[120.621,22.295],[120.614,22.305],[120.592,22.329],[120.578,22.364],[120.571,22.374],[120.538,22.396],[120.527,22.403],[120.513,22.42],[120.495,22.435],[120.459,22.452],[120.441,22.462],[120.423,22.477],[120.401,22.487],[120.38,22.484],[120.333,22.519],[120.286,22.58],[120.333,22.526],[120.329,22.552],[120.319,22.565],[120.315,22.577],[120.293,22.599],[120.257,22.627],[120.247,22.643],[120.239,22.66],[120.247,22.675],[120.254,22.69],[120.247,22.71],[120.236,22.73],[120.218,22.758],[120.2,22.793],[120.196,22.808],[120.203,22.832],[120.2,22.844],[120.189,22.861],[120.178,22.877],[120.167,22.931],[120.164,22.953],[120.157,22.967],[120.142,22.98],[120.16,22.992],[120.171,23.014],[120.167,23.031],[120.142,23.034],[120.135,23.016],[120.113,23.007],[120.11,23.04],[120.092,23.055],[120.077,23.038],[120.056,23.043],[120.052,23.056],[120.056,23.068],[120.07,23.082],[120.085,23.083],[120.099,23.097],[120.059,23.11],[120.088,23.117],[120.07,23.139],[120.059,23.151],[120.063,23.164],[120.081,23.173],[120.085,23.197],[120.077,23.207],[120.088,23.23],[120.095,23.247],[120.11,23.286],[120.124,23.294],[120.11,23.303],[120.117,23.318],[120.131,23.318],[120.149,23.321],[120.146,23.333],[120.131,23.33],[120.121,23.342],[120.131,23.36],[120.146,23.362],[120.164,23.362],[120.149,23.397],[120.135,23.426],[120.142,23.44],[120.131,23.452],[120.139,23.465],[120.157,23.492],[120.124,23.49],[120.124,23.521],[120.142,23.538],[120.142,23.595],[120.142,23.637],[120.153,23.673],[120.171,23.7],[120.175,23.734],[120.185,23.764],[120.214,23.803],[120.218,23.818],[120.239,23.833],[120.247,23.843],[120.254,23.869],[120.286,23.902],[120.293,23.912],[120.304,23.94],[120.319,23.967],[120.34,24.022],[120.351,24.037],[120.362,24.049],[120.38,24.058],[120.387,24.073],[120.412,24.097],[120.419,24.142],[120.434,24.161],[120.477,24.206],[120.481,24.222],[120.491,24.23],[120.502,24.254],[120.513,24.296],[120.549,24.352],[120.56,24.385],[120.571,24.406],[120.621,24.456],[120.65,24.483],[120.657,24.498],[120.661,24.52],[120.668,24.541],[120.689,24.576],[120.697,24.598],[120.729,24.613],[120.74,24.63],[120.761,24.654],[120.779,24.666],[120.801,24.671],[120.826,24.666],[120.823,24.686],[120.833,24.698],[120.848,24.711],[120.855,24.731],[120.873,24.743],[120.877,24.762],[120.898,24.801],[120.905,24.811],[120.909,24.823],[120.902,24.836],[120.909,24.846],[120.92,24.861],[120.923,24.875],[120.934,24.895],[120.945,24.902],[120.956,24.919],[120.963,24.941],[120.97,24.951],[121.006,25],[121.031,25.029],[121.06,25.051],[121.129,25.071],[121.147,25.081],[121.161,25.091],[121.175,25.1],[121.211,25.111],[121.287,25.123],[121.33,25.13],[121.348,25.137],[121.373,25.155],[121.388,25.159],[121.413,25.155],[121.424,25.137],[121.442,25.137],[121.431,25.155],[121.406,25.176],[121.395,25.182],[121.406,25.198],[121.417,25.204],[121.424,25.221],[121.435,25.241],[121.46,25.262],[121.499,25.279],[121.539,25.287],[121.582,25.284],[121.597,25.272],[121.636,25.223],[121.651,25.198],[121.665,25.201],[121.683,25.201],[121.676,25.187],[121.679,25.176],[121.694,25.165],[121.705,25.157],[121.719,25.152],[121.892,25.113],[121.906,25.106],[121.899,25.095],[121.899,25.066],[121.91,25.035],[121.921,25.022],[121.953,25.022],[121.967,25.022],[121.982,25.017],[121.996,25.01],[122.007,25.002],[121.928,24.966],[121.906,24.949],[121.906,24.949]]],[[[121.564,22.045],[121.582,22.031],[121.589,22.015],[121.568,22.008],[121.539,22.018],[121.514,22.035],[121.499,22.048],[121.503,22.067],[121.492,22.082],[121.568,22.082],[121.561,22.064],[121.564,22.045],[121.564,22.045]]],[[[118.393,24.522],[118.421,24.527],[118.45,24.505],[118.468,24.461],[118.465,24.431],[118.45,24.416],[118.421,24.431],[118.403,24.436],[118.375,24.433],[118.346,24.417],[118.331,24.397],[118.317,24.39],[118.303,24.397],[118.285,24.4],[118.288,24.421],[118.292,24.433],[118.288,24.456],[118.285,24.47],[118.317,24.493],[118.357,24.47],[118.382,24.473],[118.385,24.504],[118.393,24.522],[118.393,24.522]]],[[[119.649,23.603],[119.667,23.573],[119.671,23.56],[119.653,23.561],[119.627,23.556],[119.609,23.551],[119.602,23.533],[119.581,23.519],[119.563,23.517],[119.545,23.522],[119.527,23.539],[119.541,23.538],[119.559,23.534],[119.573,23.539],[119.588,23.549],[119.57,23.556],[119.559,23.57],[119.552,23.59],[119.566,23.588],[119.595,23.605],[119.613,23.61],[119.609,23.595],[119.635,23.593],[119.649,23.603],[119.649,23.603]]],[[[119.476,23.603],[119.491,23.639],[119.501,23.651],[119.516,23.637],[119.501,23.62],[119.491,23.59],[119.494,23.576],[119.48,23.57],[119.465,23.568],[119.444,23.563],[119.451,23.575],[119.465,23.576],[119.476,23.587],[119.476,23.603],[119.476,23.603]]],[[[119.573,23.627],[119.57,23.639],[119.563,23.649],[119.545,23.664],[119.566,23.679],[119.581,23.673],[119.591,23.664],[119.595,23.652],[119.591,23.632],[119.577,23.622],[119.573,23.627]]],[[[121.46,22.66],[121.456,22.673],[121.496,22.678],[121.499,22.656],[121.496,22.644],[121.485,22.636],[121.471,22.641],[121.46,22.66],[121.46,22.66]]],[[[120.023,23.452],[120.074,23.5],[120.117,23.548],[120.092,23.499],[120.074,23.484],[120.063,23.472],[120.049,23.458],[120.038,23.452],[120.02,23.438],[120.023,23.452],[120.023,23.452]]]]},"land":{"type":"MultiPolygon","coordinates":[[[[-59.6,-80],[-59.9,-80.5],[-60.2,-81],[-62.3,-80.9],[-64.5,-80.9],[-65.7,-80.6],[-65.7,-80.5],[-66.3,-80.3],[-64,-80.3],[-61.9,-80.4],[-61.1,-80],[-60.6,-79.6],[-59.6,-80]]],[[[-159.2,-79.5],[-161.1,-79.6],[-162.4,-79.3],[-163,-78.9],[-163.1,-78.9],[-163.7,-78.6],[-163.1,-78.2],[-161.2,-78.4],[-160.2,-78.7],[-159.5,-79],[-159.2,-79.5]]],[[[-45.2,-78],[-43.9,-78.5],[-43.5,-79.1],[-43.4,-79.5],[-43.3,-80],[-44.9,-80.3],[-46.5,-80.6],[-48.4,-80.8],[-50.5,-81],[-52.9,-81],[-54.2,-80.6],[-54,-80.2],[-51.9,-79.9],[-51,-79.6],[-50.4,-79.2],[-49.9,-78.8],[-49.3,-78.5],[-48.7,-78],[-48.2,-78],[-46.7,-77.8],[-45.2,-78]]],[[[-121.2,-73.5],[-119.9,-73.7],[-118.7,-73.5],[-119.3,-73.8],[-120.2,-74.1],[-121.6,-74],[-122.6,-73.7],[-122.4,-73.3],[-121.2,-73.5]]],[[[-125.6,-73.5],[-124,-73.9],[-124.6,-73.8],[-125.9,-73.7],[-127.3,-73.5],[-126.6,-73.2],[-125.6,-73.5]]],[[[-99,-71.9],[-97.9,-72.1],[-96.8,-72],[-96.2,-72.5],[-97,-72.4],[-98.2,-72.5],[-99.4,-72.4],[-100.8,-72.5],[-101.8,-72.3],[-102.3,-71.9],[-101.7,-71.7],[-100.4,-71.9],[-99,-71.9]]],[[[-68.5,-71],[-68.3,-71.4],[-68.5,-71.8],[-68.8,-72.2],[-70,-72.3],[-71.1,-72.5],[-72.4,-72.5],[-71.9,-72.1],[-73.1,-72.2],[-74.2,-72.4],[-75,-72.1],[-75,-71.7],[-73.9,-71.3],[-73.2,-71.2],[-72.1,-71.2],[-71.8,-70.7],[-71.7,-70.3],[-71.7,-69.5],[-71.2,-69],[-70.3,-68.9],[-69.7,-69.3],[-69.5,-69.6],[-69.1,-70.1],[-68.7,-70.5],[-68.5,-71]]],[[[-180,-84.7],[-179.9,-84.7],[-179.1,-84.1],[-177.3,-84.5],[-177.1,-84.4],[-176.9,-84.3],[-176.5,-84.2],[-176.2,-84.1],[-176.1,-84.1],[-175.9,-84.1],[-175.8,-84.1],[-174.4,-84.5],[-173.1,-84.1],[-172.9,-84.1],[-170,-83.9],[-169,-84.1],[-168.5,-84.2],[-167,-84.6],[-164.2,-84.8],[-161.9,-85.1],[-158.1,-85.4],[-155.2,-85.1],[-150.9,-85.3],[-148.5,-85.6],[-145.9,-85.3],[-143.1,-85],[-142.9,-84.6],[-146.8,-84.5],[-150.1,-84.3],[-150.9,-83.9],[-153.6,-83.7],[-153.4,-83.2],[-153,-82.8],[-152.7,-82.5],[-152.9,-82],[-154.5,-81.8],[-155.3,-81.4],[-156.8,-81.1],[-154.4,-81.2],[-152.1,-81],[-150.6,-81.3],[-148.9,-81],[-147.2,-80.7],[-146.4,-80.3],[-146.8,-79.9],[-148.1,-79.7],[-149.5,-79.4],[-151.6,-79.3],[-153.4,-79.2],[-155.3,-79.1],[-156,-78.7],[-157.3,-78.4],[-158.1,-78],[-158.4,-76.9],[-157.9,-77],[-157,-77.3],[-155.3,-77.2],[-153.7,-77.1],[-152.9,-77.5],[-151.3,-77.4],[-150,-77.2],[-148.7,-76.9],[-147.6,-76.6],[-146.1,-76.5],[-146.1,-76.1],[-146.5,-75.7],[-146.2,-75.4],[-144.9,-75.2],[-144.3,-75.5],[-142.8,-75.3],[-141.6,-75.1],[-140.2,-75.1],[-138.9,-75],[-137.5,-74.7],[-136.4,-74.5],[-135.2,-74.3],[-134.4,-74.4],[-133.7,-74.4],[-132.3,-74.3],[-130.9,-74.5],[-129.6,-74.5],[-128.2,-74.3],[-126.9,-74.4],[-125.4,-74.5],[-124,-74.5],[-122.6,-74.5],[-121.1,-74.5],[-119.7,-74.5],[-118.7,-74.2],[-117.5,-74],[-116.2,-74.2],[-115,-74.1],[-113.9,-73.7],[-113.3,-74],[-112.9,-74.4],[-112.3,-74.7],[-111.3,-74.4],[-110.1,-74.8],[-108.7,-74.9],[-107.6,-75.2],[-106.1,-75.1],[-104.9,-74.9],[-103.4,-75],[-102,-75.1],[-100.6,-75.3],[-100.1,-74.9],[-100.8,-74.5],[-101.3,-74.2],[-102.5,-74.1],[-103.1,-73.7],[-103.3,-73.4],[-103.7,-72.6],[-102.9,-72.8],[-101.6,-72.8],[-100.3,-72.8],[-99.1,-72.9],[-98.1,-73.2],[-97.7,-73.6],[-96.3,-73.6],[-95,-73.5],[-93.7,-73.3],[-92.4,-73.2],[-91.4,-73.4],[-90.1,-73.3],[-89.2,-72.6],[-88.4,-73],[-87.3,-73.2],[-86,-73.1],[-85.2,-73.5],[-83.9,-73.5],[-82.7,-73.6],[-81.5,-73.9],[-80.7,-73.5],[-80.3,-73.1],[-79.3,-73.5],[-77.9,-73.4],[-76.9,-73.6],[-76.2,-74],[-74.9,-73.9],[-73.9,-73.7],[-72.8,-73.4],[-71.6,-73.3],[-70.2,-73.1],[-68.9,-73],[-68,-72.8],[-67.4,-72.5],[-67.1,-72],[-67.3,-71.6],[-67.6,-71.2],[-67.9,-70.9],[-68.2,-70.5],[-68.5,-70.1],[-68.5,-69.7],[-68.4,-69.3],[-68,-69],[-67.6,-68.5],[-67.4,-68.2],[-67.6,-67.7],[-67.7,-67.3],[-67.3,-66.9],[-66.7,-66.6],[-66.1,-66.2],[-65.4,-65.9],[-64.6,-65.6],[-64.2,-65.2],[-63.6,-64.9],[-63,-64.6],[-62,-64.6],[-61.4,-64.3],[-60.7,-64.1],[-59.9,-64],[-59.2,-63.7],[-58.6,-63.4],[-57.8,-63.3],[-57.2,-63.5],[-57.6,-63.9],[-58.6,-64.2],[-59,-64.4],[-59.8,-64.2],[-60.6,-64.3],[-61.3,-64.5],[-62,-64.8],[-62.5,-65.1],[-62.6,-65.5],[-62.6,-65.9],[-62.1,-66.2],[-62.8,-66.4],[-63.7,-66.5],[-64.3,-66.8],[-64.9,-67.1],[-65.5,-67.6],[-65.7,-68],[-65.3,-68.4],[-64.8,-68.7],[-64,-68.9],[-63.2,-69.2],[-62.8,-69.6],[-62.6,-70],[-62.3,-70.4],[-61.8,-70.7],[-61.5,-71.1],[-61.4,-72],[-61.1,-72.4],[-61,-72.8],[-60.7,-73.2],[-60.8,-73.7],[-61.4,-74.1],[-62,-74.4],[-63.3,-74.6],[-63.7,-74.9],[-64.4,-75.3],[-65.9,-75.6],[-67.2,-75.8],[-68.4,-76],[-69.8,-76.2],[-70.6,-76.6],[-72.2,-76.7],[-74,-76.6],[-75.6,-76.7],[-77.2,-76.7],[-76.9,-77.1],[-75.4,-77.3],[-74.3,-77.6],[-73.7,-77.9],[-74.8,-78.2],[-76.5,-78.1],[-77.9,-78.4],[-78,-78.8],[-78,-79.2],[-76.8,-79.5],[-76.6,-79.9],[-75.4,-80.3],[-73.2,-80.4],[-71.4,-80.7],[-70,-81],[-68.2,-81.3],[-65.7,-81.5],[-63.3,-81.7],[-61.6,-82],[-59.7,-82.4],[-58.7,-82.8],[-58.2,-83.2],[-57,-82.9],[-55.4,-82.6],[-53.6,-82.3],[-51.5,-82],[-49.8,-81.7],[-47.3,-81.7],[-44.8,-81.8],[-42.8,-82.1],[-42.2,-81.7],[-40.8,-81.4],[-38.2,-81.3],[-36.3,-81.1],[-34.4,-80.9],[-32.3,-80.8],[-30.1,-80.6],[-28.6,-80.3],[-29.3,-80],[-29.7,-79.6],[-29.7,-79.3],[-31.6,-79.3],[-33.7,-79.5],[-35.6,-79.5],[-35.9,-79.1],[-35.8,-78.3],[-35.3,-78.1],[-33.9,-77.9],[-32.2,-77.7],[-31,-77.4],[-29.8,-77.1],[-28.9,-76.7],[-27.5,-76.5],[-26.2,-76.4],[-25.5,-76.3],[-23.9,-76.2],[-22.5,-76.1],[-21.2,-75.9],[-20,-75.7],[-18.9,-75.4],[-17.5,-75.1],[-16.6,-74.8],[-15.7,-74.5],[-15.4,-74.1],[-16.5,-73.9],[-16.1,-73.5],[-15.4,-73.1],[-14.4,-73],[-13.3,-72.7],[-12.3,-72.4],[-11.5,-72],[-11,-71.5],[-10.3,-71.3],[-9.1,-71.3],[-8.6,-71.7],[-7.4,-71.7],[-7.4,-71.3],[-6.9,-70.9],[-5.8,-71],[-5.5,-71.4],[-4.3,-71.5],[-3,-71.3],[-1.8,-71.2],[-0.7,-71.2],[-0.2,-71.6],[0.9,-71.3],[1.9,-71.1],[3,-71],[4.1,-70.9],[5.2,-70.6],[6.3,-70.5],[7.1,-70.2],[7.7,-69.9],[8.5,-70.1],[9.5,-70],[10.3,-70.5],[10.8,-70.8],[12,-70.6],[12.4,-70.2],[13.4,-70],[14.7,-70],[15.1,-70.4],[15.9,-70],[17,-69.9],[18.2,-69.9],[19.3,-69.9],[20.4,-70],[21.5,-70.1],[21.9,-70.4],[22.6,-70.7],[23.7,-70.5],[24.8,-70.5],[26,-70.5],[27.1,-70.5],[28.1,-70.3],[29.2,-70.2],[30,-69.9],[31,-69.8],[32,-69.7],[32.8,-69.4],[33.3,-68.8],[33.9,-68.5],[34.9,-68.7],[35.3,-69],[36.2,-69.2],[37.2,-69.2],[37.9,-69.5],[38.6,-69.8],[39.7,-69.5],[40,-69.1],[40.9,-68.9],[42,-68.6],[42.9,-68.5],[44.1,-68.3],[44.9,-68.1],[45.7,-67.8],[46.5,-67.6],[47.4,-67.7],[48.3,-67.4],[49,-67.1],[49.9,-67.1],[50.8,-66.9],[50.9,-66.5],[51.8,-66.2],[52.6,-66.1],[53.6,-65.9],[54.5,-65.8],[55.4,-65.9],[56.4,-66],[57.2,-66.2],[57.3,-66.7],[58.1,-67],[58.7,-67.3],[59.9,-67.4],[60.6,-67.7],[61.4,-68],[62.4,-68],[63.2,-67.8],[64.1,-67.4],[65,-67.6],[66,-67.7],[66.9,-67.9],[67.9,-67.9],[68.9,-67.9],[69.7,-69],[69.7,-69.2],[69.6,-69.7],[68.6,-69.9],[67.8,-70.3],[67.9,-70.7],[69.1,-70.7],[68.9,-71.1],[68.4,-71.4],[67.9,-71.9],[68.7,-72.2],[69.9,-72.3],[71,-72.1],[71.6,-71.7],[71.9,-71.3],[72.5,-71],[73.1,-70.7],[73.3,-70.4],[73.9,-69.9],[74.5,-69.8],[75.6,-69.7],[76.6,-69.6],[77.6,-69.5],[78.1,-69.1],[78.4,-68.7],[79.1,-68.3],[80.1,-68.1],[80.9,-67.9],[81.5,-67.5],[82.1,-67.4],[82.8,-67.2],[83.8,-67.3],[84.7,-67.2],[85.7,-67.1],[86.8,-67.1],[87.5,-66.9],[88,-66.2],[88.4,-66.5],[88.8,-67],[89.7,-67.1],[90.6,-67.2],[91.6,-67.1],[92.6,-67.2],[93.5,-67.2],[94.2,-67.1],[95,-67.2],[95.8,-67.4],[96.7,-67.2],[97.8,-67.2],[98.7,-67.1],[99.7,-67.2],[100.4,-66.9],[100.9,-66.6],[101.6,-66.3],[102.8,-65.6],[103.5,-65.7],[104.2,-66],[104.9,-66.3],[106.2,-66.9],[107.2,-67],[108.1,-67],[109.2,-66.8],[110.2,-66.7],[111.1,-66.4],[111.7,-66.1],[112.9,-66.1],[113.6,-65.9],[114.4,-66.1],[114.9,-66.4],[115.6,-66.7],[116.7,-66.7],[117.4,-66.9],[118.6,-67.2],[119.8,-67.3],[120.9,-67.2],[121.7,-66.9],[122.3,-66.6],[123.2,-66.5],[124.1,-66.6],[125.2,-66.7],[126.1,-66.6],[127,-66.6],[127.9,-66.7],[128.8,-66.8],[129.7,-66.6],[130.8,-66.4],[131.8,-66.4],[132.9,-66.4],[133.9,-66.3],[134.8,-66.2],[135,-65.7],[135.1,-65.3],[135.7,-65.6],[135.9,-66],[136.2,-66.4],[136.6,-66.8],[137.5,-67],[138.6,-66.9],[139.9,-66.9],[140.8,-66.8],[142.1,-66.8],[143.1,-66.8],[144.4,-66.8],[145.5,-66.9],[146.2,-67.2],[146,-67.6],[146.6,-67.9],[147.7,-68.1],[148.8,-68.4],[150.1,-68.6],[151.5,-68.7],[152.5,-68.9],[153.6,-68.9],[154.3,-68.6],[155.2,-68.8],[155.9,-69.1],[156.8,-69.4],[158,-69.5],[159.2,-69.6],[159.7,-70],[160.8,-70.2],[161.6,-70.6],[162.7,-70.7],[163.8,-70.7],[164.9,-70.8],[166.1,-70.8],[167.3,-70.8],[168.4,-71],[169.5,-71.2],[170.5,-71.4],[171.2,-71.7],[171.1,-72.1],[170.6,-72.4],[170.1,-72.9],[169.8,-73.2],[169.3,-73.7],[168,-73.8],[167.4,-74.2],[166.1,-74.4],[165.6,-74.8],[165,-75.1],[164.2,-75.5],[163.8,-75.9],[163.6,-76.2],[163.5,-76.7],[163.5,-77.1],[164.1,-77.5],[164.3,-77.8],[164.7,-78.2],[166.6,-78.3],[167,-78.8],[165.2,-78.9],[163.7,-79.1],[161.8,-79.2],[160.9,-79.7],[160.7,-80.2],[160.3,-80.6],[159.8,-80.9],[161.1,-81.3],[161.6,-81.7],[162.5,-82.1],[163.7,-82.4],[165.1,-82.7],[166.6,-83],[168.9,-83.3],[169.4,-83.8],[172.3,-84],[172.5,-84.1],[173.2,-84.4],[176,-84.2],[178.3,-84.5],[-180,-84.7]]],[[[-67.8,-53.8],[-66.5,-54.5],[-65.1,-54.7],[-65.5,-55.2],[-66.5,-55.2],[-67,-54.9],[-67.3,-55.3],[-68.1,-55.6],[-69.2,-55.5],[-70,-55.2],[-71,-55.1],[-72.3,-54.5],[-73.3,-54],[-74.7,-52.8],[-73.8,-53],[-72.4,-53.7],[-71.1,-54.1],[-70.6,-53.6],[-70.3,-52.9],[-69.3,-52.5],[-68.6,-52.6],[-68.3,-53.1],[-67.8,-53.8]]],[[[-58.5,-51.1],[-57.7,-51.5],[-58,-51.9],[-59.4,-52.2],[-59.8,-51.8],[-60.7,-52.3],[-61.2,-51.8],[-60,-51.3],[-59.2,-51.5],[-58.5,-51.1]]],[[[70.3,-49.7],[68.7,-49.8],[68.7,-49.2],[68.9,-48.8],[68.9,-48.6],[69.6,-48.9],[70.5,-49.1],[70.6,-49.3],[70.3,-49.7]]],[[[145.4,-40.8],[146.4,-41.1],[146.9,-41],[147.7,-40.8],[148.3,-40.9],[148.4,-42.1],[148,-42.4],[147.9,-43.2],[147.6,-42.9],[146.9,-43.6],[146.7,-43.6],[146,-43.5],[145.4,-42.7],[145.3,-42],[144.7,-41.2],[144.7,-40.7],[145.4,-40.8]]],[[[173,-40.9],[173.2,-41.3],[174,-40.9],[174.2,-41.3],[174.2,-41.8],[173.9,-42.2],[173.2,-43],[172.7,-43.4],[173.1,-43.9],[172.3,-43.9],[171.5,-44.2],[171.2,-44.9],[170.6,-45.9],[169.8,-46.4],[169.3,-46.6],[168.4,-46.6],[167.8,-46.3],[166.7,-46.2],[166.5,-45.9],[167,-45.1],[168.3,-44.1],[168.9,-43.9],[169.7,-43.6],[170.5,-43],[171.1,-42.5],[171.6,-41.8],[172,-41.5],[172.1,-41],[172.8,-40.5],[173,-40.9]]],[[[174.6,-36.2],[175.3,-37.2],[175.4,-36.5],[175.8,-36.8],[176,-37.6],[176.8,-37.9],[177.4,-38],[178,-37.6],[178.5,-37.7],[178.3,-38.6],[178,-39.2],[177.2,-39.1],[176.9,-39.4],[177,-39.9],[176.9,-40.1],[176.5,-40.6],[176,-41.3],[175.2,-41.7],[175.1,-41.4],[174.7,-41.3],[175.2,-40.5],[174.9,-39.9],[173.8,-39.5],[173.9,-39.1],[174.6,-38.8],[174.7,-38],[174.7,-37.4],[174.3,-36.7],[174.3,-36.5],[173.8,-36.1],[173.1,-35.2],[172.6,-34.5],[173,-34.5],[173.6,-35],[174.3,-35.3],[174.6,-36.2]]],[[[167.1,-22.2],[166.7,-22.4],[166.2,-22.1],[165.5,-21.7],[164.8,-21.1],[164.2,-20.4],[164,-20.1],[164.5,-20.1],[165,-20.5],[165.5,-20.8],[165.8,-21.1],[166.6,-21.7],[167.1,-22.2]]],[[[178.4,-17.3],[178.7,-17.6],[178.6,-18.2],[177.9,-18.3],[177.4,-18.2],[177.3,-17.7],[177.7,-17.4],[178.1,-17.5],[178.4,-17.3]]],[[[-180,-16.6],[179.4,-16.8],[178.7,-17],[178.6,-16.6],[179.1,-16.4],[179.4,-16.4],[-180,-16.1],[-179.8,-16],[-179.9,-16.5],[-180,-16.6]]],[[[167.8,-16.5],[167.5,-16.6],[167.2,-16.2],[167.2,-15.9],[167.8,-16.5]]],[[[167.1,-14.9],[167.3,-15.7],[167,-15.6],[166.8,-15.7],[166.7,-15.4],[166.6,-14.6],[167.1,-14.9]]],[[[50.1,-13.6],[50.2,-14.8],[50.5,-15.2],[50.4,-15.7],[50.2,-16],[49.9,-15.4],[49.7,-15.7],[49.9,-16.5],[49.8,-16.9],[49.5,-17.1],[49.4,-18],[49,-19.1],[48.5,-20.5],[47.9,-22.4],[47.5,-23.8],[47.1,-24.9],[46.3,-25.2],[45.4,-25.6],[44.8,-25.3],[44,-25],[43.8,-24.5],[43.7,-23.6],[43.3,-22.8],[43.3,-22.1],[43.4,-21.3],[43.9,-21.2],[43.9,-20.8],[44.4,-20.1],[44.5,-19.4],[44.2,-19],[44,-18.3],[44,-17.4],[44.3,-16.9],[44.4,-16.2],[44.9,-16.2],[45.5,-16],[45.9,-15.8],[46.3,-15.8],[46.9,-15.2],[47.7,-14.6],[48,-14.1],[47.9,-13.7],[48.3,-13.8],[48.8,-13.1],[48.9,-12.5],[49.2,-12],[49.5,-12.5],[49.8,-12.9],[50.1,-13.6]]],[[[143.6,-13.8],[143.9,-14.5],[144.6,-14.2],[144.9,-14.6],[145.4,-15],[145.3,-15.4],[145.5,-16.3],[145.6,-16.8],[145.9,-16.9],[146.2,-17.8],[146.1,-18.3],[146.4,-19],[147.5,-19.5],[148.2,-20],[148.8,-20.4],[148.7,-20.6],[149.3,-21.3],[149.7,-22.3],[150.1,-22.1],[150.5,-22.6],[150.7,-22.4],[150.9,-23.5],[151.6,-24.1],[152.1,-24.5],[152.9,-25.3],[153.1,-26.1],[153.2,-26.6],[153.1,-27.3],[153.6,-28.1],[153.5,-29],[153.3,-29.5],[153.1,-30.4],[153.1,-30.9],[152.9,-31.6],[152.4,-32.6],[151.7,-33],[151.3,-33.8],[151,-34.3],[150.7,-35.2],[150.3,-35.7],[150.1,-36.4],[149.9,-37.1],[150,-37.4],[149.4,-37.8],[148.3,-37.8],[147.4,-38.2],[146.9,-38.6],[146.3,-39],[145.5,-38.6],[144.9,-38.4],[145,-37.9],[144.5,-38.1],[143.6,-38.8],[142.7,-38.5],[142.2,-38.4],[141.6,-38.3],[140.6,-38],[140,-37.4],[139.8,-36.6],[139.6,-36.1],[139.1,-35.7],[138.1,-35.6],[138.4,-35.1],[138.2,-34.4],[137.7,-35.1],[136.8,-35.3],[137.4,-34.7],[137.5,-34.1],[137.9,-33.6],[137.8,-32.9],[137,-33.8],[136.4,-34.1],[136,-34.9],[135.2,-34.5],[135.2,-33.9],[134.6,-33.2],[134.1,-32.8],[134.3,-32.6],[133,-32],[132.3,-32],[131.3,-31.5],[129.5,-31.6],[128.2,-31.9],[127.1,-32.3],[126.1,-32.2],[125.1,-32.7],[124.2,-33],[124,-33.5],[123.7,-33.9],[122.8,-33.9],[122.2,-34],[121.3,-33.8],[120.6,-33.9],[119.9,-34],[119.3,-34.5],[119,-34.5],[118.5,-34.7],[118,-35.1],[117.3,-35],[116.6,-35],[115.6,-34.4],[115,-34.2],[115,-33.6],[115.5,-33.5],[115.7,-33.3],[115.7,-32.9],[115.8,-32.2],[115.7,-31.6],[115.2,-30.6],[115,-30],[115,-29.5],[114.6,-28.8],[114.6,-28.5],[114.2,-28.1],[114,-27.3],[113.5,-26.5],[113.3,-26.1],[113.8,-26.5],[113.4,-25.6],[113.9,-25.9],[114.2,-26.3],[114.2,-25.8],[113.7,-25],[113.6,-24.7],[113.4,-24.4],[113.5,-23.8],[113.7,-23.6],[113.8,-23.1],[113.7,-22.5],[114.1,-21.8],[114.2,-22.5],[114.6,-21.8],[115.5,-21.5],[115.9,-21.1],[116.7,-20.7],[117.2,-20.6],[117.4,-20.7],[118.2,-20.4],[118.8,-20.3],[119,-20],[119.3,-20],[119.8,-20],[120.9,-19.7],[121.4,-19.2],[121.7,-18.7],[122.2,-18.2],[122.3,-17.8],[122.3,-17.3],[123,-16.4],[123.4,-17.3],[123.9,-17.1],[123.5,-16.6],[123.8,-16.1],[124.3,-16.3],[124.4,-15.6],[124.9,-15.1],[125.2,-14.7],[125.7,-14.5],[125.7,-14.2],[126.1,-14.3],[126.1,-14.1],[126.6,-14],[127.1,-13.8],[127.8,-14.3],[128.4,-14.9],[129,-14.9],[129.6,-15],[129.4,-14.4],[129.9,-13.6],[130.3,-13.4],[130.2,-13.1],[130.6,-12.5],[131.2,-12.2],[131.7,-12.3],[132.6,-12.1],[132.6,-11.6],[131.8,-11.3],[132.4,-11.1],[133,-11.4],[133.6,-11.8],[134.4,-12],[134.7,-11.9],[135.3,-12.2],[135.9,-12],[136.3,-12],[136.5,-11.9],[137,-12.4],[136.7,-12.9],[136.3,-13.3],[136,-13.3],[136.1,-13.7],[135.8,-14.2],[135.4,-14.7],[135.5,-15],[136.3,-15.6],[137.1,-15.9],[137.6,-16.2],[138.3,-16.8],[138.6,-16.8],[139.1,-17.1],[139.3,-17.4],[140.2,-17.7],[140.9,-17.4],[141.1,-16.8],[141.3,-16.4],[141.4,-15.8],[141.7,-15],[141.6,-14.6],[141.6,-14.3],[141.5,-13.7],[141.7,-12.9],[141.8,-12.7],[141.7,-12.4],[141.9,-11.9],[142.1,-11.3],[142.1,-11],[142.5,-10.7],[142.8,-11.2],[142.9,-11.8],[143.1,-11.9],[143.2,-12.3],[143.5,-12.8],[143.6,-13.4],[143.6,-13.8]]],[[[162.1,-10.5],[162.4,-10.8],[161.7,-10.8],[161.3,-10.2],[161.9,-10.4],[162.1,-10.5]]],[[[120.7,-10.2],[120.3,-10.3],[119,-9.6],[119.9,-9.4],[120.4,-9.7],[120.8,-10],[120.7,-10.2]]],[[[160.9,-9.9],[160.5,-9.9],[159.9,-9.8],[159.6,-9.6],[159.7,-9.2],[160.4,-9.4],[160.7,-9.6],[160.9,-9.9]]],[[[161.7,-9.6],[161.5,-9.8],[160.8,-8.9],[160.6,-8.3],[160.9,-8.3],[161.3,-9.1],[161.7,-9.6]]],[[[124.4,-10.1],[123.6,-10.4],[123.5,-10.2],[123.6,-9.9],[124,-9.3],[125,-8.9],[125.1,-8.7],[125.9,-8.4],[126.6,-8.4],[127,-8.3],[127.3,-8.4],[127,-8.7],[125.9,-9.1],[125.1,-9.4],[124.4,-10.1]]],[[[117.9,-8.1],[118.3,-8.4],[118.9,-8.3],[119.1,-8.7],[118,-8.9],[117.3,-9],[116.7,-9],[117.1,-8.5],[117.6,-8.4],[117.9,-8.1]]],[[[122.9,-8.1],[122.8,-8.7],[121.3,-8.9],[119.9,-8.8],[119.9,-8.4],[120.7,-8.2],[121.3,-8.5],[122,-8.5],[122.9,-8.1]]],[[[159.9,-8.3],[159.9,-8.5],[159.1,-8.1],[158.6,-7.8],[158.2,-7.4],[158.4,-7.3],[158.8,-7.6],[159.6,-8],[159.9,-8.3]]],[[[157.5,-7.3],[157.3,-7.4],[156.9,-7.2],[156.5,-6.8],[156.5,-6.6],[157.1,-7],[157.5,-7.3]]],[[[108.6,-6.8],[110.5,-6.9],[110.8,-6.5],[112.6,-6.9],[113,-7.6],[114.5,-7.8],[115.7,-8.4],[114.6,-8.8],[113.5,-8.3],[112.6,-8.4],[111.5,-8.3],[110.6,-8.1],[109.4,-7.7],[108.7,-7.6],[108.3,-7.8],[106.5,-7.4],[106.3,-6.9],[105.4,-6.9],[106.1,-5.9],[107.3,-6],[108.1,-6.3],[108.5,-6.4],[108.6,-6.8]]],[[[134.7,-6.2],[134.2,-6.9],[134.1,-6.1],[134.3,-5.8],[134.5,-5.4],[134.7,-5.7],[134.7,-6.2]]],[[[155.9,-6.8],[155.6,-6.9],[155.2,-6.5],[154.7,-5.9],[154.5,-5.1],[154.7,-5],[154.8,-5.3],[155.1,-5.6],[155.5,-6.2],[156,-6.5],[155.9,-6.8]]],[[[152,-5.5],[151.5,-5.6],[151.3,-5.8],[150.8,-6.1],[150.2,-6.3],[149.7,-6.3],[148.9,-6],[148.3,-5.7],[148.4,-5.4],[149.3,-5.6],[149.8,-5.5],[150,-5],[150.1,-5],[150.2,-5.5],[150.8,-5.5],[151.1,-5.1],[151.6,-4.8],[151.5,-4.2],[152.1,-4.1],[152.3,-4.3],[152.3,-4.9],[152,-5.5]]],[[[127.2,-3.5],[126.9,-3.8],[126.2,-3.6],[126,-3.2],[127,-3.1],[127.2,-3.5]]],[[[130.5,-3.1],[130.8,-3.9],[130,-3.4],[129.2,-3.4],[128.6,-3.4],[127.9,-3.4],[128.1,-2.8],[129.4,-2.8],[130.5,-3.1]]],[[[153.1,-4.5],[152.8,-4.8],[152.6,-4.2],[152.4,-3.8],[152,-3.5],[151.4,-3],[150.7,-2.7],[150.9,-2.5],[151.5,-2.8],[151.8,-3],[152.2,-3.2],[152.6,-3.7],[153,-4],[153.1,-4.5]]],[[[134.1,-1.2],[134.4,-2.8],[135.5,-3.4],[136.3,-2.3],[137.4,-1.7],[138.3,-1.7],[139.2,-2.1],[139.9,-2.4],[141,-2.6],[142.7,-3.3],[144.6,-3.9],[145.3,-4.4],[145.8,-4.9],[146,-5.5],[147.6,-6.1],[147.9,-6.6],[147,-6.7],[147.2,-7.4],[148.1,-8],[148.7,-9.1],[149.3,-9.1],[149.3,-9.5],[150,-9.7],[149.7,-9.9],[150.8,-10.3],[150.7,-10.6],[150,-10.7],[149.8,-10.4],[148.9,-10.3],[147.9,-10.1],[147.1,-9.5],[146.6,-8.9],[146,-8.1],[144.7,-7.6],[143.9,-7.9],[143.3,-8.2],[143.4,-9],[142.6,-9.3],[142.1,-9.2],[141,-9.1],[140.1,-8.3],[139.1,-8.1],[138.9,-8.4],[137.6,-8.4],[138,-7.6],[138.7,-7.3],[138.4,-6.2],[137.9,-5.4],[136,-4.5],[135.2,-4.5],[133.7,-3.5],[133.4,-4],[133,-4.1],[132.8,-3.7],[132.8,-3.3],[132,-2.8],[133.1,-2.5],[133.8,-2.5],[133.7,-2.2],[132.2,-2.2],[131.8,-1.6],[130.9,-1.4],[130.5,-0.9],[131.9,-0.7],[132.4,-0.4],[134,-0.8],[134.1,-1.2]]],[[[125.2,1.4],[124.4,0.4],[123.7,0.2],[122.7,0.4],[121.1,0.4],[120.2,0.2],[120,-0.5],[120.9,-1.4],[121.5,-1],[123.3,-0.6],[123.3,-1.1],[122.8,-0.9],[122.4,-1.5],[121.5,-1.9],[122.5,-3.2],[122.3,-3.5],[123.2,-4.7],[123.2,-5.3],[122.6,-5.6],[122.2,-5.3],[122.7,-4.5],[121.7,-4.9],[121.5,-4.6],[121.6,-4.2],[120.9,-3.6],[121,-2.6],[120.3,-2.9],[120.4,-4.1],[120.4,-5.5],[119.8,-5.7],[119.4,-5.4],[119.7,-4.5],[119.5,-3.5],[119.1,-3.5],[118.8,-2.8],[119.2,-2.1],[119.3,-1.4],[119.8,0.2],[120,0.6],[120.9,1.3],[121.7,1],[122.9,0.9],[124.1,0.9],[125.1,1.6],[125.2,1.4]]],[[[128.7,1.1],[128.6,0.3],[128.1,0.4],[128,-0.3],[128.4,-0.8],[128.1,-0.9],[127.7,-0.3],[127.4,1],[127.6,1.8],[127.9,2.2],[128,1.6],[128.6,1.5],[128.7,1.1]]],[[[105.8,-5.9],[104.7,-5.9],[103.9,-5],[102.6,-4.2],[102.2,-3.6],[101.4,-2.8],[100.9,-2.1],[100.1,-0.7],[99.3,0.2],[99,1],[98.6,1.8],[97.7,2.5],[97.2,3.3],[96.4,3.9],[95.4,5],[95.3,5.5],[95.9,5.4],[97.5,5.2],[98.4,4.3],[99.1,3.6],[99.7,3.2],[100.6,2.1],[101.7,2.1],[102.5,1.4],[103.1,0.6],[103.8,0.1],[103.4,-0.7],[104,-1.1],[104.4,-1.1],[104.5,-1.8],[104.9,-2.3],[105.6,-2.4],[106.1,-3.1],[105.9,-4.3],[105.8,-5.9]]],[[[117.9,1.8],[119,0.9],[117.8,0.8],[117.5,0.1],[117.5,-0.8],[116.6,-1.5],[116.5,-2.5],[116.1,-4],[116,-3.7],[114.9,-4.1],[114.5,-3.5],[113.8,-3.4],[113.3,-3.1],[112.1,-3.5],[111.7,-3],[111,-3],[110.2,-2.9],[110.1,-1.6],[109.6,-1.3],[109.1,-0.5],[109,0.4],[109.1,1.3],[109.7,2],[110.4,1.7],[111.2,1.9],[111.4,2.7],[111.8,2.9],[113,3.1],[113.7,3.9],[114.2,4.5],[114.6,4.9],[115.5,5.4],[116.2,6.1],[116.7,6.9],[117.1,6.9],[117.6,6.4],[117.7,6],[118.3,5.7],[119.2,5.4],[119.1,5],[118.4,5],[118.6,4.5],[117.9,4.1],[117.3,3.2],[118,2.3],[117.9,1.8]]],[[[126.4,8.4],[126.5,7.8],[126.5,7.2],[126.2,6.3],[125.8,7.3],[125.4,6.8],[125.7,6],[125.4,5.6],[124.2,6.2],[123.9,6.9],[124.2,7.4],[123.6,7.8],[123.3,7.4],[122.8,7.5],[122.1,6.9],[121.9,7.2],[122.3,8],[122.9,8.3],[123.5,8.7],[123.8,8.2],[124.6,8.5],[124.8,9],[125.5,9],[125.4,9.8],[126.2,9.3],[126.3,8.8],[126.4,8.4]]],[[[81.2,6.2],[80.3,6],[79.9,6.8],[79.7,8.2],[80.1,9.8],[80.8,9.3],[81.3,8.6],[81.8,7.5],[81.6,6.5],[81.2,6.2]]],[[[-60.9,10.1],[-61.8,10],[-62,10.1],[-61.7,10.4],[-61.7,10.8],[-61.1,10.9],[-60.9,10.9],[-60.9,10.1]]],[[[124,10.3],[123.6,9.9],[123.3,9.3],[123,9],[122.4,9.7],[122.6,10],[122.8,10.3],[122.9,10.9],[123.5,10.9],[123.3,10.3],[124.1,11.2],[124,10.3]]],[[[118.5,9.3],[117.2,8.4],[117.7,9.1],[118.4,9.7],[119,10.4],[119.5,11.4],[119.7,10.6],[119,10],[118.5,9.3]]],[[[121.9,11.9],[122.5,11.6],[123.1,11.6],[123.1,11.2],[122.6,10.7],[122,10.4],[122,10.9],[122,11.4],[121.9,11.9]]],[[[125.5,12.2],[125.8,11],[125,11.3],[125,11],[125.3,10.4],[124.8,10.1],[124.8,10.8],[124.5,10.9],[124.3,11.5],[124.9,11.4],[124.9,11.8],[124.3,12.6],[125.2,12.5],[125.5,12.2]]],[[[121.5,13.1],[121.3,12.2],[120.8,12.7],[120.3,13.5],[121.2,13.4],[121.5,13.1]]],[[[121.3,18.5],[121.9,18.2],[122.2,18.5],[122.3,18.2],[122.2,17.8],[122.5,17.1],[122.3,16.3],[121.7,15.9],[121.5,15.1],[121.7,14.3],[122.3,14.2],[122.7,14.3],[124,13.8],[123.9,13.2],[124.2,13],[124.1,12.5],[123.3,13],[122.9,13.6],[122.7,13.2],[122,13.8],[121.1,13.6],[120.6,13.9],[120.7,14.3],[121,14.5],[120.7,14.8],[120.6,14.4],[120.1,15],[119.9,15.4],[119.9,16.4],[120.3,16],[120.4,17.6],[120.7,18.5],[121.3,18.5]]],[[[-65.6,18.2],[-65.8,18],[-66.6,18],[-67.2,17.9],[-67.2,18.4],[-67.1,18.5],[-66.3,18.5],[-65.8,18.4],[-65.6,18.2]]],[[[-76.9,17.9],[-77.2,17.7],[-77.8,17.9],[-78.3,18.2],[-78.2,18.5],[-77.8,18.5],[-77.6,18.5],[-76.9,18.4],[-76.4,18.2],[-76.2,17.9],[-76.9,17.9]]],[[[-72.6,19.9],[-71.7,19.7],[-71.6,19.9],[-70.8,19.9],[-70.2,19.6],[-70,19.6],[-69.8,19.3],[-69.2,19.3],[-69.3,19],[-68.8,19],[-68.3,18.6],[-68.7,18.2],[-69.2,18.4],[-69.6,18.4],[-70,18.4],[-70.1,18.2],[-70.5,18.2],[-70.7,18.4],[-71,18.3],[-71.4,17.6],[-71.7,17.8],[-71.7,18],[-72.4,18.2],[-72.8,18.1],[-73.5,18.2],[-73.9,18],[-74.5,18.3],[-74.4,18.7],[-73.4,18.5],[-72.7,18.4],[-72.3,18.7],[-72.8,19.1],[-72.8,19.5],[-73.4,19.6],[-73.2,19.9],[-72.6,19.9]]],[[[110.3,18.7],[109.5,18.2],[108.7,18.5],[108.6,19.4],[109.1,19.8],[110.2,20.1],[110.8,20.1],[111,19.7],[110.6,19.3],[110.3,18.7]]],[[[-155.5,19.1],[-155.7,18.9],[-155.9,19.1],[-155.9,19.3],[-156.1,19.7],[-156,19.8],[-155.9,20],[-155.9,20.2],[-155.9,20.3],[-155.8,20.2],[-155.4,20.1],[-155.2,20],[-155.1,19.9],[-154.8,19.5],[-154.8,19.5],[-155.2,19.2],[-155.5,19.1]]],[[[-156.1,20.6],[-156.4,20.6],[-156.6,20.8],[-156.7,20.9],[-156.7,20.9],[-156.6,21],[-156.3,20.9],[-156,20.8],[-156.1,20.6]]],[[[-156.8,21.2],[-156.8,21.1],[-157.3,21.1],[-157.3,21.2],[-156.8,21.2]]],[[[-157.7,21.3],[-157.7,21.3],[-157.8,21.3],[-158.1,21.3],[-158.3,21.5],[-158.3,21.6],[-158,21.7],[-157.9,21.7],[-157.7,21.3]]],[[[-159.3,22],[-159.5,21.9],[-159.8,22.1],[-159.7,22.1],[-159.6,22.2],[-159.4,22.2],[-159.3,22]]],[[[-79.7,22.8],[-79.3,22.4],[-78.3,22.5],[-78,22.3],[-77.1,21.7],[-76.5,21.2],[-76.2,21.2],[-75.6,21],[-75.7,20.7],[-74.9,20.7],[-74.2,20.3],[-74.3,20.1],[-75,19.9],[-75.6,19.9],[-76.3,20],[-77.8,19.9],[-77.1,20.4],[-77.5,20.7],[-78.1,20.7],[-78.5,21],[-78.7,21.6],[-79.3,21.6],[-80.2,21.8],[-80.5,22],[-81.8,22.2],[-82.2,22.4],[-81.8,22.6],[-82.8,22.7],[-83.5,22.2],[-83.9,22.2],[-84.1,21.9],[-84.5,21.8],[-85,21.9],[-84.4,22.2],[-84.2,22.6],[-83.8,22.8],[-83.3,23],[-82.5,23.1],[-82.3,23.2],[-81.4,23.1],[-80.6,23.1],[-79.7,22.8]]],[[[-77.5,23.8],[-77.8,23.7],[-78,24.3],[-78.4,24.6],[-78.2,25.2],[-77.9,25.2],[-77.5,24.3],[-77.5,23.8]]],[[[121.2,22.8],[120.7,22],[120.2,22.8],[120.1,23.6],[120.7,24.5],[121.5,25.3],[122,25],[121.8,24.4],[121.2,22.8]]],[[[-77.8,26.6],[-78.9,26.4],[-79,26.8],[-78.5,26.9],[-77.8,26.8],[-77.8,26.6]]],[[[-77,26.6],[-77.2,25.9],[-77.4,26],[-77.3,26.5],[-77.8,26.9],[-77.8,27],[-77,26.6]]],[[[134.6,34.1],[134.8,33.8],[134.2,33.2],[133.8,33.5],[133.3,33.3],[133,32.7],[132.4,33],[132.4,33.5],[132.9,34.1],[133.5,33.9],[133.9,34.4],[134.6,34.1]]],[[[34.6,35.7],[33.9,35.2],[34,35.1],[34,35],[33,34.6],[32.5,34.7],[32.3,35.1],[32.7,35.1],[32.8,35.1],[32.9,35.4],[33.7,35.4],[34.6,35.7]]],[[[23.7,35.7],[24.2,35.4],[25,35.4],[25.8,35.4],[25.7,35.2],[26.3,35.3],[26.2,35],[24.7,34.9],[24.7,35.1],[23.5,35.3],[23.7,35.7]]],[[[15.5,38.2],[15.2,37.4],[15.3,37.1],[15.1,36.6],[14.3,37],[13.8,37.1],[12.4,37.6],[12.6,38.1],[13.7,38],[14.8,38.1],[15.5,38.2]]],[[[9.2,41.2],[9.8,40.5],[9.7,39.2],[9.2,39.2],[8.8,38.9],[8.4,39.2],[8.4,40.4],[8.2,41],[8.7,40.9],[9.2,41.2]]],[[[141,37.1],[140.6,36.3],[140.8,35.8],[140.3,35.1],[139,34.7],[137.2,34.6],[135.8,33.5],[135.1,33.8],[135.1,34.6],[133.3,34.4],[132.2,33.9],[131,33.9],[132,33.1],[131.3,31.5],[130.7,31],[130.2,31.4],[130.4,32.3],[129.8,32.6],[129.4,33.3],[130.4,33.6],[130.9,34.2],[131.9,34.8],[132.6,35.4],[134.6,35.7],[135.7,35.5],[136.7,37.3],[137.4,36.8],[138.9,37.8],[139.4,38.2],[140.1,39.4],[139.9,40.6],[140.3,41.2],[141.4,41.4],[141.9,40],[141.9,39.2],[141,38.2],[141,37.1]]],[[[9.6,42.2],[9.2,41.4],[8.8,41.6],[8.5,42.3],[8.7,42.6],[9.4,43],[9.6,42.2]]],[[[143.9,44.2],[144.6,44],[145.3,44.4],[145.5,43.3],[144.1,43],[143.2,42],[141.6,42.7],[141.1,41.6],[140,41.6],[139.8,42.6],[140.3,43.3],[141.4,43.4],[141.7,44.8],[142,45.6],[143.1,44.5],[143.9,44.2]]],[[[-63.7,46.5],[-62.9,46.4],[-62,46.4],[-62.5,46],[-62.9,46],[-64.1,46.4],[-64.4,46.7],[-64,47],[-63.7,46.5]]],[[[-61.8,49.1],[-62.3,49.1],[-63.6,49.4],[-64.5,49.9],[-64.2,50],[-62.9,49.7],[-61.8,49.3],[-61.8,49.1]]],[[[-123.5,48.5],[-124,48.4],[-125.7,48.8],[-126,49.2],[-126.8,49.5],[-127,49.8],[-128.1,50],[-128.4,50.5],[-128.4,50.8],[-127.3,50.6],[-126.7,50.4],[-125.8,50.3],[-125.4,49.9],[-124.9,49.5],[-123.9,49.1],[-123.5,48.5]]],[[[-56.1,50.7],[-56.8,49.8],[-56.1,50.1],[-55.5,49.9],[-55.8,49.6],[-54.9,49.3],[-54.5,49.6],[-53.5,49.2],[-53.8,48.5],[-53.1,48.7],[-53,48.2],[-52.6,47.5],[-53.1,46.7],[-53.5,46.6],[-54.2,46.8],[-54,47.6],[-54.2,47.8],[-55.4,46.9],[-56,46.9],[-55.3,47.4],[-56.3,47.6],[-57.3,47.6],[-59.3,47.6],[-59.4,47.9],[-58.8,48.3],[-59.2,48.5],[-58.4,49.1],[-57.4,50.7],[-56.7,51.3],[-55.9,51.6],[-55.4,51.6],[-55.6,51.3],[-56.1,50.7]]],[[[-132.7,54],[-131.7,54.1],[-132.1,53],[-131.2,52.2],[-131.6,52.2],[-132.2,52.6],[-132.6,53.1],[-133.1,53.4],[-133.2,53.9],[-133.2,54.2],[-132.7,54]]],[[[143.6,50.7],[144.7,49],[143.2,49.3],[142.6,47.9],[143.5,46.8],[143.5,46.1],[142.7,46.7],[142.1,46],[141.9,46.8],[142,47.8],[141.9,48.9],[142.1,49.6],[142.2,51],[141.6,51.9],[141.7,53.3],[142.6,53.8],[142.2,54.2],[142.7,54.4],[142.9,53.7],[143.3,52.7],[143.2,51.8],[143.6,50.7]]],[[[-6.8,52.3],[-8.6,51.7],[-10,51.8],[-9.2,52.9],[-9.7,53.9],[-8.3,54.7],[-7.6,55.1],[-6.7,55.2],[-5.7,54.6],[-6.2,53.9],[-6,53.2],[-6.8,52.3]]],[[[12.7,55.6],[12.1,54.8],[11,55.4],[10.9,55.8],[12.4,56.1],[12.7,55.6]]],[[[-153,57.1],[-154,56.7],[-154.5,57],[-154.7,57.5],[-153.8,57.8],[-153.2,58],[-152.6,57.9],[-152.1,57.6],[-153,57.1]]],[[[-3,58.6],[-4.1,57.6],[-3.1,57.7],[-2,57.7],[-2.2,56.9],[-3.1,56],[-2.1,55.9],[-1.1,54.6],[-0.4,54.5],[0.2,53.3],[0.5,52.9],[1.7,52.7],[1.6,52.1],[1,51.8],[1.4,51.3],[0.5,50.8],[-0.8,50.8],[-2.5,50.5],[-3,50.7],[-3.6,50.2],[-4.5,50.3],[-5.2,50],[-5.8,50.2],[-4.3,51.2],[-3.4,51.4],[-5,51.6],[-5.3,52],[-4.2,52.3],[-4.8,52.8],[-4.6,53.5],[-3.1,53.4],[-2.9,54],[-3.6,54.6],[-4.8,54.8],[-5.1,55.1],[-4.7,55.5],[-5,55.8],[-5.6,55.3],[-5.6,56.3],[-6.2,56.8],[-5.8,57.8],[-5,58.6],[-4.2,58.6],[-3,58.6]]],[[[-165.6,59.9],[-166.2,59.8],[-166.8,59.9],[-167.5,60.2],[-166.5,60.4],[-165.7,60.3],[-165.6,59.9]]],[[[-79.3,62.2],[-79.7,61.6],[-80.1,61.7],[-80.4,62],[-80.3,62.1],[-79.9,62.4],[-79.5,62.4],[-79.3,62.2]]],[[[-81.9,62.7],[-83.1,62.2],[-83.8,62.2],[-84,62.5],[-83.2,62.9],[-81.9,62.9],[-81.9,62.7]]],[[[-171.7,63.8],[-171.1,63.6],[-170.5,63.7],[-169.7,63.4],[-168.7,63.3],[-168.8,63.2],[-169.5,63],[-170.3,63.2],[-170.7,63.4],[-171.6,63.3],[-171.8,63.4],[-171.7,63.8]]],[[[-85.2,65.7],[-85,65.2],[-84.5,65.4],[-83.9,65.1],[-82.8,64.8],[-81.6,64.5],[-81.6,64],[-80.8,64.1],[-80.1,63.7],[-81,63.4],[-82.5,63.7],[-83.1,64.1],[-84.1,63.6],[-85.5,63.1],[-85.9,63.6],[-87.2,63.5],[-86.4,64],[-86.2,64.8],[-85.9,65.7],[-85.2,65.7]]],[[[-14.5,66.5],[-14.7,65.8],[-13.6,65.1],[-14.9,64.4],[-17.8,63.7],[-18.7,63.5],[-20,63.6],[-22.8,64],[-21.8,64.4],[-24,64.9],[-22.2,65.1],[-22.2,65.4],[-24.3,65.6],[-23.7,66.3],[-22.1,66.4],[-20.6,65.7],[-19.1,66.3],[-17.8,66],[-16.2,66.5],[-14.5,66.5]]],[[[-75.9,67.1],[-77,67.1],[-77.2,67.6],[-76.8,68.1],[-75.9,68.3],[-75.1,68],[-75.1,67.6],[-75.2,67.4],[-75.9,67.1]]],[[[-180,69],[-177.5,68.2],[-174.9,67.2],[-175,66.6],[-174.3,66.3],[-174.6,67.1],[-171.9,66.9],[-169.9,66],[-170.9,65.5],[-172.5,65.4],[-172.6,64.5],[-173,64.3],[-173.9,64.3],[-174.7,64.6],[-176,64.9],[-176.2,65.4],[-177.2,65.5],[-178.4,65.4],[-178.9,65.7],[-178.7,66.1],[-179.9,65.9],[-179.4,65.4],[-180,65],[180,65],[178.7,64.5],[177.4,64.6],[178.3,64.1],[178.9,63.3],[179.4,63],[179.5,62.6],[179.2,62.3],[177.4,62.5],[174.6,61.8],[173.7,61.7],[172.1,60.9],[170.7,60.3],[170.3,59.9],[168.9,60.6],[166.3,59.8],[165.8,60.2],[164.9,59.7],[163.5,59.9],[163.2,59.2],[162,58.2],[162.1,57.8],[163.2,57.6],[163.1,56.2],[162.1,56.1],[161.7,55.3],[162.1,54.9],[160.4,54.3],[160,53.2],[158.5,53],[158.2,51.9],[156.8,51],[156.4,51.7],[156,53.2],[155.4,55.4],[155.9,56.8],[156.8,57.4],[156.8,57.8],[158.4,58.1],[160.1,59.3],[161.9,60.3],[163.7,61.1],[164.5,62.6],[163.3,62.5],[162.7,61.6],[160.1,60.5],[159.3,61.8],[156.7,61.4],[154.2,59.8],[155,59.1],[152.8,58.9],[151.3,58.8],[151.3,59.5],[149.8,59.7],[148.5,59.2],[145.5,59.3],[142.2,59],[139,57.1],[135.1,54.7],[136.7,54.6],[137.2,54],[138.2,53.8],[138.8,54.3],[139.9,54.2],[141.3,53.1],[141.4,52.2],[140.6,51.2],[140.5,50],[140.1,48.4],[138.6,47],[138.2,46.3],[136.9,45.1],[135.5,44],[134.9,43.4],[133.5,42.8],[132.9,42.8],[132.3,43.3],[130.9,42.6],[130.8,42.2],[130.4,42.3],[130,41.9],[129.7,41.6],[129.7,40.9],[129.2,40.7],[129,40.5],[128.6,40.2],[128,40],[127.5,39.8],[127.5,39.3],[127.4,39.2],[127.8,39.1],[128.4,38.6],[129.2,37.4],[129.5,36.8],[129.5,35.6],[129.1,35.1],[128.2,34.9],[127.4,34.5],[126.5,34.4],[126.4,34.9],[126.6,35.7],[126.1,36.7],[126.9,36.9],[126.2,37.7],[125.7,37.9],[125.6,37.8],[125.3,37.7],[125.2,37.9],[125,37.9],[124.7,38.1],[125,38.5],[125.2,38.7],[125.1,38.8],[125.4,39.4],[125.3,39.6],[124.7,39.7],[124.3,39.9],[122.9,39.6],[122.1,39.2],[121.1,38.9],[121.6,39.4],[121.4,39.8],[122.2,40.4],[121.6,40.9],[120.8,40.6],[119.6,39.9],[119,39.3],[118,39.2],[117.5,38.7],[118.1,38.1],[118.9,37.9],[118.9,37.4],[119.7,37.2],[120.8,37.9],[121.7,37.5],[122.4,37.5],[122.5,36.9],[121.1,36.7],[120.6,36.1],[119.7,35.6],[119.2,34.9],[120.2,34.4],[120.6,33.4],[121.2,32.5],[121.9,31.7],[121.9,30.9],[121.3,30.7],[121.5,30.1],[122.1,29.8],[121.9,29],[121.7,28.2],[121.1,28.1],[120.4,27.1],[119.6,25.7],[118.7,24.5],[117.3,23.6],[115.9,22.8],[114.8,22.7],[114.2,22.2],[113.8,22.5],[113.2,22.1],[111.8,21.6],[110.8,21.4],[110.4,20.3],[109.9,20.3],[109.6,21],[109.9,21.4],[108.5,21.7],[108,21.6],[106.7,20.7],[105.9,19.8],[105.7,19.1],[106.4,18],[107.4,16.7],[108.3,16.1],[108.9,15.3],[109.3,13.4],[109.2,11.7],[108.4,11],[107.2,10.4],[106.4,9.5],[105.2,8.6],[104.8,9.2],[105.1,9.9],[104.3,10.5],[103.5,10.6],[103.1,11.2],[102.6,12.2],[101.7,12.6],[100.8,12.6],[101,13.4],[100.1,13.4],[100,12.3],[99.5,10.8],[99.2,10],[99.2,9.2],[99.9,9.2],[100.3,8.3],[100.5,7.4],[101,6.9],[101.6,6.7],[102.1,6.2],[102.4,6.1],[103,5.5],[103.4,4.9],[103.4,4.2],[103.3,3.7],[103.4,3.4],[103.5,2.8],[103.9,2.5],[104.2,1.6],[104.2,1.3],[103.5,1.2],[102.6,2],[101.4,2.8],[101.3,3.3],[100.7,3.9],[100.6,4.8],[100.2,5.3],[100.3,6],[100.1,6.5],[99.7,6.8],[99.5,7.3],[99,7.9],[98.5,8.4],[98.3,7.8],[98.1,8.3],[98.3,9],[98.6,9.9],[98.5,10.7],[98.8,11.4],[98.4,12],[98.5,13.1],[98.1,13.6],[97.8,14.8],[97.6,16.1],[97.2,16.9],[96.5,16.4],[95.4,15.7],[94.8,15.8],[94.2,16],[94.5,17.3],[94.3,18.2],[93.5,19.4],[93.7,19.7],[93.1,19.9],[92.4,20.7],[92.1,21.2],[92,21.7],[91.8,22.2],[91.4,22.8],[90.5,22.8],[90.6,22.4],[90.3,21.8],[89.8,22],[89.7,21.9],[89.4,22],[89,22.1],[88.9,21.7],[88.2,21.7],[87,21.5],[87,20.7],[86.5,20.2],[85.1,19.5],[83.9,18.3],[83.2,17.7],[82.2,17],[82.2,16.6],[81.7,16.3],[80.8,16],[80.3,15.9],[80,15.1],[80.2,13.8],[80.3,13],[79.9,12.1],[79.9,10.4],[79.3,10.3],[78.9,9.5],[79.2,9.2],[78.3,8.9],[77.9,8.3],[77.5,8],[76.6,8.9],[76.1,10.3],[75.7,11.3],[75.4,11.8],[74.9,12.7],[74.6,14],[74.4,14.6],[73.5,16],[73.1,17.9],[72.8,19.2],[72.8,20.4],[72.6,21.4],[71.2,20.8],[70.5,20.9],[69.2,22.1],[69.6,22.5],[69.3,22.8],[68.2,23.7],[67.4,23.9],[67.1,24.7],[66.4,25.4],[64.5,25.2],[62.9,25.2],[61.5,25.1],[59.6,25.4],[58.5,25.6],[57.4,25.7],[57,27],[56.5,27.1],[55.7,27],[54.7,26.5],[53.5,26.8],[52.5,27.6],[51.5,27.9],[50.9,28.8],[50.1,30.1],[49.6,30],[48.9,30.3],[48.6,29.9],[48,30],[48.2,29.5],[48.1,29.3],[48.4,28.6],[48.8,27.7],[49.3,27.5],[49.5,27.1],[50.2,26.7],[50.2,26.3],[50.1,25.9],[50.2,25.6],[50.5,25.3],[50.7,25],[50.8,24.8],[50.7,25.5],[51,26],[51.3,26.1],[51.6,25.8],[51.6,25.2],[51.4,24.6],[51.6,24.2],[51.8,24.3],[51.8,24],[52.6,24.2],[53.4,24.2],[54,24.1],[54.7,24.8],[55.4,25.4],[56.1,26.1],[56.4,26.4],[56.5,26.3],[56.4,25.9],[56.3,25.7],[56.4,24.9],[56.8,24.2],[57.4,23.9],[58.1,23.7],[58.7,23.6],[59.2,23],[59.4,22.7],[59.8,22.5],[59.8,22.3],[59.4,21.7],[59.3,21.4],[58.9,21.1],[58.5,20.4],[58,20.5],[57.8,20.2],[57.7,19.7],[57.8,19.1],[57.7,18.9],[57.2,18.9],[56.6,18.6],[56.5,18.1],[56.3,17.9],[55.7,17.9],[55.3,17.6],[55.3,17.2],[54.8,16.9],[54.2,17],[53.6,16.7],[53.1,16.7],[52.4,16.4],[52.2,15.9],[52.2,15.6],[51.2,15.2],[49.6,14.7],[48.7,14],[48.2,13.9],[47.9,14],[47.4,13.6],[46.7,13.4],[45.9,13.3],[45.6,13.3],[45.4,13],[45.1,13],[45,12.7],[44.5,12.7],[44.2,12.6],[43.5,12.6],[43.2,13.2],[43.3,13.8],[43.1,14.1],[42.9,14.8],[42.6,15.2],[42.8,15.3],[42.7,15.7],[42.8,15.9],[42.8,16.3],[42.7,16.8],[42.3,17.1],[42.3,17.5],[41.8,17.8],[41.2,18.7],[40.9,19.5],[40.2,20.2],[39.8,20.3],[39.1,21.3],[39,22],[39.1,22.6],[38.5,23.7],[38,24.1],[37.5,24.3],[37.2,24.9],[37.2,25.1],[36.9,25.6],[36.6,25.8],[36.3,26.6],[35.6,27.4],[35.1,28.1],[34.6,28.1],[34.8,28.6],[34.8,29],[35,29.4],[34.9,29.5],[34.6,29.1],[34.4,28.3],[34.2,27.8],[33.9,27.6],[33.6,28],[33.1,28.4],[32.4,29.9],[32.3,29.8],[32.7,28.7],[33.3,27.7],[34.1,26.1],[34.5,25.6],[34.8,25],[35.7,23.9],[35.5,23.8],[35.5,23.1],[36.7,22.2],[36.9,22],[37.2,21],[37,20.8],[37.1,19.8],[37.5,18.6],[37.9,18.4],[38.4,18],[39,16.8],[39.3,15.9],[39.8,15.4],[41.2,14.5],[41.7,13.9],[42.3,13.3],[42.6,13],[43.1,12.7],[43.3,12.4],[43.3,12],[42.7,11.7],[43.1,11.5],[43.5,11.3],[43.7,10.9],[44.1,10.4],[44.6,10.4],[45.6,10.7],[46.6,10.8],[47.5,11.1],[48,11.2],[48.4,11.4],[48.9,11.4],[49.3,11.4],[49.7,11.6],[50.3,11.7],[50.7,12],[51.1,12],[51.1,11.7],[51,11.2],[51,10.6],[50.8,10.3],[50.6,9.2],[50.1,8.1],[49.5,6.8],[48.6,5.3],[47.7,4.2],[46.6,2.9],[45.6,2],[44.1,1.1],[43.1,0.3],[42,-0.9],[41.8,-1.4],[41.6,-1.7],[40.9,-2.1],[40.6,-2.5],[40.3,-2.6],[40.1,-3.3],[39.8,-3.7],[39.6,-4.3],[39.2,-4.7],[38.7,-5.9],[38.8,-6.5],[39.4,-6.8],[39.5,-7.1],[39.2,-7.7],[39.3,-8],[39.2,-8.5],[39.5,-9.1],[40,-10.1],[40.3,-10.3],[40.5,-10.8],[40.4,-11.8],[40.6,-12.6],[40.6,-14.2],[40.8,-14.7],[40.5,-15.4],[40.1,-16.1],[39.5,-16.7],[38.5,-17.1],[37.4,-17.6],[36.3,-18.7],[35.9,-18.8],[35.2,-19.6],[34.8,-19.8],[34.7,-20.5],[35.2,-21.3],[35.4,-21.8],[35.4,-22.1],[35.6,-22.1],[35.5,-23.1],[35.4,-23.5],[35.6,-23.7],[35.5,-24.1],[35,-24.5],[34.2,-24.8],[33,-25.4],[32.6,-25.7],[32.7,-26.1],[32.9,-26.2],[32.8,-26.7],[32.6,-27.5],[32.5,-28.3],[32.2,-28.8],[31.5,-29.3],[31.3,-29.4],[30.9,-29.9],[30.6,-30.4],[30.1,-31.1],[28.9,-32.2],[28.2,-32.8],[27.5,-33.2],[26.4,-33.6],[25.9,-33.7],[25.8,-33.9],[25.2,-33.8],[24.7,-34],[23.6,-33.8],[23,-33.9],[22.6,-33.9],[21.5,-34.3],[20.7,-34.4],[20.1,-34.8],[19.6,-34.8],[19.2,-34.5],[18.9,-34.4],[18.4,-34],[18.4,-34.1],[18.2,-33.9],[18.3,-33.3],[17.9,-32.6],[18.2,-32.4],[18.2,-31.7],[17.6,-30.7],[17.1,-29.9],[17.1,-29.9],[16.3,-28.6],[15.6,-27.8],[15.2,-27.1],[15,-26.1],[14.7,-25.4],[14.4,-23.9],[14.4,-22.7],[14.3,-22.1],[13.9,-21.7],[13.4,-20.9],[12.8,-19.7],[12.6,-19],[11.8,-18.1],[11.7,-17.3],[11.6,-16.7],[11.8,-15.8],[12.1,-14.9],[12.2,-14.4],[12.5,-13.5],[12.7,-13.1],[13.3,-12.5],[13.6,-12],[13.7,-11.3],[13.7,-10.7],[13.4,-10.4],[13.1,-9.8],[12.9,-9.2],[12.9,-9],[13.2,-8.6],[12.9,-7.6],[12.7,-6.9],[12.2,-6.3],[12.3,-6.1],[12.2,-5.8],[11.9,-5],[11.1,-4],[10.1,-3],[9.4,-2.1],[8.8,-1.1],[8.8,-0.8],[9,-0.5],[9.3,0.3],[9.5,1],[9.3,1.2],[9.6,2.3],[9.8,3.1],[9.4,3.7],[8.9,3.9],[8.7,4.4],[8.5,4.5],[8.5,4.8],[7.5,4.4],[7.1,4.5],[6.7,4.2],[5.9,4.3],[5.4,4.9],[5,5.6],[4.3,6.3],[3.6,6.3],[2.7,6.3],[1.9,6.1],[1.1,5.9],[-0.5,5.3],[-1.1,5],[-2,4.7],[-2.9,5],[-3.3,5],[-4,5.2],[-4.6,5.2],[-5.8,5],[-6.5,4.7],[-7.5,4.3],[-7.7,4.4],[-8,4.4],[-9,4.8],[-9.9,5.6],[-10.8,6.1],[-11.4,6.8],[-11.7,6.9],[-12.4,7.3],[-12.9,7.8],[-13.1,8.2],[-13.2,8.9],[-13.7,9.5],[-14.1,9.9],[-14.3,10],[-14.6,10.2],[-14.7,10.7],[-14.8,10.9],[-15.1,11],[-15.7,11.5],[-16.1,11.5],[-16.3,11.8],[-16.3,12],[-16.6,12.2],[-16.7,12.4],[-16.8,13.2],[-16.7,13.6],[-17.1,14.4],[-17.6,14.7],[-17.2,14.9],[-16.7,15.6],[-16.5,16.1],[-16.6,16.7],[-16.3,17.2],[-16.1,18.1],[-16.3,19.1],[-16.4,19.6],[-16.3,20.1],[-16.5,20.6],[-17.1,21],[-17,21.4],[-17,21.9],[-16.6,22.2],[-16.3,22.7],[-16.3,23],[-16,23.7],[-15.4,24.4],[-15.1,24.5],[-14.8,25.1],[-14.8,25.6],[-14.4,26.3],[-13.8,26.6],[-13.1,27.6],[-12.6,28],[-11.7,28.1],[-10.9,28.8],[-10.4,29.1],[-9.6,29.9],[-9.8,31.2],[-9.4,32],[-9.3,32.6],[-8.7,33.2],[-7.7,33.7],[-6.9,34.1],[-6.2,35.1],[-5.9,35.8],[-5.2,35.8],[-4.6,35.3],[-3.6,35.4],[-2.6,35.2],[-2.2,35.2],[-1.2,35.7],[-0.1,35.9],[0.5,36.3],[1.5,36.6],[3.2,36.8],[4.8,36.9],[5.3,36.7],[6.3,37.1],[7.3,37.1],[7.7,36.9],[8.4,36.9],[9.5,37.4],[10.2,37.2],[10.2,36.7],[11,37.1],[11.1,36.9],[10.6,36.4],[10.6,35.9],[10.9,35.7],[10.8,34.8],[10.2,34.3],[10.3,33.8],[10.9,33.8],[11.1,33.3],[11.5,33.1],[12.7,32.8],[13.1,32.9],[13.9,32.7],[15.2,32.3],[15.7,31.4],[16.6,31.2],[18,30.8],[19.1,30.3],[19.6,30.5],[20.1,31],[19.8,31.8],[20.1,32.2],[20.9,32.7],[21.5,32.8],[22.9,32.6],[23.2,32.2],[23.6,32.2],[23.9,32],[24.9,31.9],[25.2,31.6],[26.5,31.6],[27.5,31.3],[28.4,31],[28.9,30.9],[29.7,31.2],[30.1,31.5],[31,31.6],[31.7,31.4],[32,30.9],[32.2,31.3],[33,31],[33.8,31],[34.3,31.2],[34.6,31.5],[34.5,31.6],[34.8,32.1],[35,32.8],[35.1,33.1],[35.1,33.1],[35.5,33.9],[36,34.6],[36,34.6],[35.9,35.4],[36.1,35.8],[35.8,36.3],[36.2,36.7],[35.6,36.6],[34.7,36.8],[34,36.2],[32.5,36.1],[31.7,36.6],[30.6,36.7],[30.4,36.3],[29.7,36.1],[28.7,36.7],[27.6,36.7],[27,37.7],[26.3,38.2],[26.8,39],[26.2,39.5],[27.3,40.4],[28.8,40.5],[29.2,41.2],[31.1,41.1],[32.3,41.7],[33.5,42],[35.2,42],[36.9,41.3],[38.3,40.9],[39.5,41.1],[40.4,41],[41.6,41.5],[41.7,42],[41.5,42.6],[40.9,43],[40.3,43.1],[40,43.4],[38.7,44.3],[37.5,44.7],[36.7,45.2],[37.4,45.4],[38.2,46.2],[37.7,46.6],[39.1,47],[39.1,47.3],[38.2,47.1],[37.4,47],[36.8,46.7],[35.8,46.6],[35,46.3],[35,45.7],[35.5,45.4],[36.5,45.5],[36.3,45.1],[35.2,44.9],[33.9,44.4],[33.3,44.6],[33.5,45],[32.5,45.3],[32.6,45.5],[33.6,45.9],[33.3,46.1],[31.7,46.3],[31.7,46.7],[30.7,46.6],[30.4,46],[29.6,45.3],[29.6,45],[29.1,44.8],[28.8,44.9],[28.6,43.7],[28,43.3],[27.7,42.6],[28,42],[28.1,41.6],[29,41.3],[28.8,41.1],[27.6,41],[27.2,40.7],[26.4,40.2],[26,40.6],[26.1,40.8],[25.4,40.9],[24.9,40.9],[23.7,40.7],[24.4,40.1],[23.9,40],[23.3,40],[22.8,40.5],[22.6,40.3],[22.9,39.7],[23.4,39.2],[23,39],[23.5,38.5],[24,38.2],[24,37.7],[23.1,37.9],[23.4,37.4],[22.8,37.3],[23.2,36.4],[22.5,36.4],[21.7,36.8],[21.3,37.6],[21.1,38.3],[20.7,38.8],[20.2,39.3],[20.2,39.6],[20,39.7],[20,39.9],[19.4,40.3],[19.3,40.7],[19.4,41.4],[19.5,41.7],[19.4,41.9],[19.2,42],[18.9,42.3],[18.4,42.5],[17.5,42.8],[16.9,43.2],[16,43.5],[15.2,44.2],[15.4,44.3],[14.9,44.7],[14.9,45.1],[14.3,45.2],[14,44.8],[13.7,45.1],[13.7,45.5],[13.7,45.5],[13.9,45.6],[13.1,45.7],[12.3,45.4],[12.4,44.9],[12.3,44.6],[12.6,44.1],[13.5,43.6],[14,42.8],[15.1,42],[15.9,42],[16.2,41.7],[15.9,41.5],[16.8,41.2],[17.5,40.9],[18.4,40.4],[18.5,40.2],[18.3,39.8],[17.7,40.3],[16.9,40.4],[16.5,39.8],[17.2,39.4],[17.1,38.9],[16.6,38.8],[16.1,38],[15.7,37.9],[15.7,38.2],[15.9,38.8],[16.1,39],[15.7,39.5],[15.4,40],[15,40.2],[14.7,40.6],[14.1,40.8],[13.6,41.2],[12.9,41.3],[12.1,41.7],[11.2,42.4],[10.5,42.9],[10.2,43.9],[9.7,44],[8.9,44.4],[8.4,44.2],[7.8,43.8],[7.4,43.7],[6.5,43.1],[4.6,43.4],[3.1,43.1],[3,42.5],[3,41.9],[2.1,41.2],[0.8,41],[0.7,40.7],[0.1,40.1],[-0.3,39.3],[0.1,38.7],[-0.5,38.3],[-0.7,37.6],[-1.4,37.4],[-2.1,36.7],[-3.4,36.7],[-4.4,36.7],[-5,36.3],[-5.4,35.9],[-5.9,36],[-6.2,36.4],[-6.5,36.9],[-7.5,37.1],[-7.9,36.8],[-8.4,37],[-8.9,36.9],[-8.7,37.7],[-8.8,38.3],[-9.3,38.4],[-9.5,38.7],[-9.4,39.4],[-9,39.8],[-9,40.2],[-8.8,40.8],[-8.8,41.2],[-9,41.5],[-9,41.9],[-9,42.6],[-9.4,43],[-8,43.7],[-6.8,43.6],[-5.4,43.6],[-4.3,43.4],[-3.5,43.5],[-1.9,43.4],[-1.4,44],[-1.2,46],[-2.2,47.1],[-3,47.6],[-4.5,48],[-4.6,48.7],[-3.3,48.9],[-1.6,48.6],[-1.9,49.8],[-1,49.3],[1.3,50.1],[1.6,50.9],[2.5,51.1],[3.3,51.3],[3.8,51.6],[4.7,53.1],[6.1,53.5],[6.9,53.5],[7.1,53.7],[7.9,53.7],[8.1,53.5],[8.8,54],[8.6,54.4],[8.5,55],[8.1,55.5],[8.1,56.5],[8.3,56.8],[8.5,57.1],[9.4,57.2],[9.8,57.4],[10.6,57.7],[10.5,57.2],[10.3,56.9],[10.4,56.6],[10.9,56.5],[10.7,56.1],[10.4,56.2],[9.6,55.5],[9.9,55],[9.9,54.6],[10.9,54.4],[10.9,54],[12,54.2],[12.5,54.5],[13.6,54.1],[14.1,53.8],[14.8,54.1],[16.4,54.5],[17.6,54.9],[18.6,54.7],[18.7,54.4],[19.7,54.4],[19.9,54.9],[21.3,55.2],[21.1,56],[21.1,56.8],[21.6,57.4],[22.5,57.8],[23.3,57],[24.1,57],[24.3,57.8],[24.4,58.4],[24.1,58.3],[23.4,58.6],[23.3,59.2],[24.6,59.5],[25.9,59.6],[26.9,59.4],[28,59.5],[29.1,60],[28.1,60.5],[26.3,60.4],[24.5,60.1],[22.9,59.8],[22.3,60.4],[21.3,60.7],[21.5,61.7],[21.1,62.6],[21.5,63.2],[22.4,63.8],[24.7,64.9],[25.4,65.1],[25.3,65.5],[23.9,66],[22.2,65.7],[21.2,65],[21.4,64.4],[19.8,63.6],[17.8,62.7],[17.1,61.3],[17.8,60.6],[18.8,60.1],[17.9,59],[16.8,58.7],[16.4,57],[15.9,56.1],[14.7,56.2],[14.1,55.4],[12.9,55.4],[12.6,56.3],[11.8,57.4],[11,58.9],[10.4,59.5],[8.4,58.3],[7.1,58.1],[5.7,58.6],[5.3,59.7],[5,62],[5.9,62.6],[8.6,63.5],[10.5,64.5],[12.4,65.9],[14.8,67.8],[16.4,68.6],[19.2,69.8],[21.4,70.3],[23,70.2],[24.5,71],[26.4,71],[28.2,71.2],[31.3,70.5],[30,70.2],[31.1,69.6],[32.1,69.9],[33.8,69.3],[36.5,69.1],[40.3,67.9],[41.1,67.5],[41.1,66.8],[40,66.3],[38.4,66],[33.9,66.8],[33.2,66.6],[34.8,65.9],[34.9,64.4],[36.2,64.1],[37,63.9],[37.1,64.3],[36.5,64.8],[37.2,65.1],[39.6,64.5],[40.4,64.8],[39.8,65.5],[42.1,66.5],[43,66.4],[44,66.1],[44.5,66.8],[43.7,67.4],[44.2,68],[43.5,68.6],[46.3,68.2],[46.8,67.7],[45.6,67.6],[45.6,67],[46.3,66.7],[47.9,66.9],[48.1,67.5],[50.2,68],[53.7,68.9],[54.5,68.8],[53.5,68.2],[54.7,68.1],[55.4,68.4],[57.3,68.5],[58.8,68.9],[59.9,68.3],[61.1,68.9],[60,69.5],[60.6,69.9],[63.5,69.5],[64.9,69.2],[68.5,68.1],[69.2,68.6],[68.2,69.1],[68.1,69.4],[66.9,69.5],[67.3,69.9],[66.7,70.7],[66.7,71],[68.5,71.9],[69.2,72.8],[69.9,73],[72.6,72.8],[72.8,72.2],[71.8,71.4],[72.5,71.1],[72.8,70.4],[72.6,69],[73.7,68.4],[73.2,67.7],[71.3,66.3],[72.4,66.2],[72.8,66.5],[73.9,66.8],[74.2,67.3],[75.1,67.8],[74.5,68.3],[74.9,69],[73.8,69.1],[73.6,69.6],[74.4,70.6],[73.1,71.4],[74.9,72.1],[74.7,72.8],[75.2,72.9],[75.7,72.3],[75.3,71.3],[76.4,71.2],[75.9,71.9],[77.6,72.3],[79.7,72.3],[81.5,71.7],[80.6,72.6],[80.5,73.6],[82.3,73.9],[84.7,73.8],[86.8,73.9],[86,74.5],[87.2,75.1],[88.3,75.1],[90.3,75.6],[92.9,75.8],[93.2,76],[95.9,76.1],[96.7,75.9],[98.9,76.4],[100.8,76.4],[101,76.9],[102,77.3],[104.4,77.7],[106.1,77.4],[104.7,77.1],[107,77],[107.2,76.5],[108.2,76.7],[111.1,76.7],[113.3,76.2],[114.1,75.8],[113.9,75.3],[112.8,75],[110.2,74.5],[109.4,74.2],[110.6,74],[112.1,73.8],[113,74],[113.5,73.3],[114,73.6],[115.6,73.8],[118.8,73.6],[119,73.1],[123.2,73],[123.3,73.7],[125.4,73.6],[127,73.6],[128.6,73],[129.1,72.4],[128.5,72],[129.7,71.2],[131.3,70.8],[132.3,71.8],[133.9,71.4],[135.6,71.7],[137.5,71.3],[138.2,71.6],[139.9,71.5],[139.1,72.4],[140.5,72.8],[149.5,72.2],[150.4,71.6],[153,70.8],[157,71],[159,70.9],[159.8,70.5],[159.7,69.7],[160.9,69.4],[162.3,69.6],[164.1,69.7],[165.9,69.5],[167.8,69.6],[169.6,68.7],[170.8,69],[170,69.7],[170.5,70.1],[173.6,69.8],[175.7,69.9],[178.6,69.4],[-180,69]],[[49.1,41.3],[49.6,40.6],[50.1,40.5],[50.4,40.3],[49.6,40.2],[49.4,39.4],[49.2,39],[48.9,38.8],[48.9,38.3],[49.2,37.6],[50.1,37.4],[50.8,36.9],[52.3,36.7],[53.8,37],[53.9,37.2],[53.7,37.9],[53.9,39],[53.1,39.3],[53.4,40],[52.7,40],[52.9,40.9],[53.9,40.6],[54.7,41],[54,41.6],[53.7,42.1],[52.9,41.9],[52.8,41.1],[52.5,41.8],[52.4,42],[52.7,42.4],[52.5,42.8],[51.3,43.1],[50.9,44],[50.3,44.3],[50.3,44.6],[51.3,44.5],[51.3,45.2],[52.2,45.4],[53,45.3],[53.2,46.2],[53,46.9],[52,46.8],[51.2,47],[50,46.6],[49.1,46.4],[48.6,45.8],[47.7,45.6],[46.7,44.6],[47.6,43.7],[47.5,43],[48.6,41.8],[49.1,41.3]]],[[[-95.6,69.1],[-96.3,68.8],[-97.6,69.1],[-98.4,69],[-99.8,69.4],[-98.9,69.7],[-98.2,70.1],[-97.2,69.9],[-96.6,69.7],[-96.3,69.5],[-95.6,69.1]]],[[[-180,71.5],[180,70.8],[178.9,70.8],[178.7,71.1],[-180,71.5]]],[[[-180,71.5],[-179.9,71.6],[-179,71.6],[-177.6,71.3],[-177.7,71.1],[-178.7,70.9],[-180,70.8],[-180,71.5]]],[[[-90.5,69.5],[-90.5,68.5],[-89.2,69.3],[-88,68.6],[-88.3,67.9],[-87.3,67.2],[-86.3,67.9],[-85.6,68.8],[-85.5,69.9],[-84.1,69.8],[-82.6,69.7],[-81.3,69.2],[-81.2,68.7],[-82,68.1],[-81.3,67.6],[-81.4,67.1],[-83.3,66.4],[-84.7,66.3],[-85.8,66.6],[-86.1,66.1],[-87,65.2],[-87.3,64.8],[-88.5,64.1],[-89.9,64],[-90.7,63.6],[-90.8,63],[-91.9,62.8],[-93.2,62],[-94.2,60.9],[-94.6,60.1],[-94.7,58.9],[-93.2,58.8],[-92.8,57.8],[-92.3,57.1],[-90.9,57.3],[-89,56.9],[-88,56.5],[-87.3,56],[-86.1,55.7],[-85,55.3],[-83.4,55.2],[-82.3,55.1],[-82.4,54.3],[-82.1,53.3],[-81.4,52.2],[-79.9,51.2],[-79.1,51.5],[-78.6,52.6],[-79.1,54.1],[-79.8,54.7],[-78.2,55.1],[-77.1,55.8],[-76.5,56.5],[-76.6,57.2],[-77.3,58.1],[-78.5,58.8],[-77.3,59.9],[-77.8,60.8],[-78.1,62.3],[-77.4,62.6],[-75.7,62.3],[-74.7,62.2],[-73.8,62.4],[-72.9,62.1],[-71.7,61.5],[-71.4,61.1],[-69.6,61.1],[-69.6,60.2],[-69.3,59],[-68.4,58.8],[-67.7,58.2],[-66.2,58.8],[-65.2,59.9],[-64.6,60.3],[-63.8,59.4],[-62.5,58.2],[-61.4,57],[-61.8,56.3],[-60.5,55.8],[-59.6,55.2],[-58,54.9],[-57.3,54.6],[-56.9,53.8],[-56.2,53.6],[-55.8,53.3],[-55.7,52.1],[-56.4,51.8],[-57.1,51.4],[-58.8,51.1],[-60,50.2],[-61.7,50.1],[-63.9,50.3],[-65.4,50.3],[-66.4,50.2],[-67.2,49.5],[-68.5,49.1],[-70,47.7],[-71.1,46.8],[-70.3,47],[-68.7,48.3],[-66.6,49.1],[-65.1,49.2],[-64.2,48.7],[-65.1,48.1],[-64.8,47],[-64.5,46.2],[-63.2,45.7],[-61.5,45.9],[-60.5,47],[-60.5,46.3],[-59.8,45.9],[-61,45.3],[-63.3,44.7],[-64.2,44.3],[-65.4,43.5],[-66.1,43.6],[-66.2,44.5],[-64.4,45.3],[-66,45.3],[-67.1,45.1],[-67,44.8],[-68,44.3],[-69.1,44],[-70.1,43.7],[-70.7,43],[-70.8,42.9],[-70.8,42.3],[-70.5,41.8],[-70.1,41.8],[-70.2,42.1],[-69.9,41.9],[-70,41.6],[-70.6,41.5],[-71.1,41.5],[-71.9,41.3],[-72.3,41.3],[-72.9,41.2],[-73.7,40.9],[-72.2,41.1],[-71.9,40.9],[-73.3,40.6],[-74,40.6],[-74,40.8],[-74.3,40.5],[-74,40.4],[-74.2,39.7],[-74.9,38.9],[-75,39.2],[-75.2,39.2],[-75.5,39.5],[-75.3,39],[-75.1,38.8],[-75.1,38.4],[-75.4,38],[-75.9,37.2],[-76,37.3],[-75.7,37.9],[-76.2,38.3],[-76.4,39.1],[-76.5,38.7],[-76.3,38.1],[-77,38.2],[-76.3,37.9],[-76.3,37],[-76,36.9],[-75.9,36.6],[-75.7,35.6],[-76.4,34.8],[-77.4,34.5],[-78.1,33.9],[-78.6,33.9],[-79.1,33.5],[-79.2,33.2],[-80.3,32.5],[-80.9,32],[-81.3,31.4],[-81.5,30.7],[-81.3,30],[-81,29.2],[-80.5,28.5],[-80.5,28],[-80.1,26.9],[-80.1,26.2],[-80.1,25.8],[-80.4,25.2],[-80.7,25.1],[-81.2,25.2],[-81.3,25.6],[-81.7,25.9],[-82.2,26.7],[-82.7,27.5],[-82.9,27.9],[-82.7,28.6],[-82.9,29.1],[-83.7,29.9],[-84.1,30.1],[-85.1,29.6],[-85.3,29.7],[-85.8,30.2],[-86.4,30.4],[-87.5,30.3],[-88.4,30.4],[-89.2,30.3],[-89.6,30.2],[-89.4,29.9],[-89.4,29.5],[-89.2,29.3],[-89.4,29.2],[-89.8,29.3],[-90.2,29.1],[-90.9,29.1],[-91.6,29.7],[-92.5,29.6],[-93.2,29.8],[-93.8,29.7],[-94.7,29.5],[-95.6,28.7],[-96.6,28.3],[-97.1,27.8],[-97.4,27.4],[-97.4,26.7],[-97.3,26.2],[-97.1,25.9],[-97.1,25.9],[-97.1,25.9],[-97.5,25],[-97.7,24.3],[-97.8,22.9],[-97.9,22.4],[-97.7,21.9],[-97.4,21.4],[-97.2,20.6],[-96.5,19.9],[-96.3,19.3],[-95.9,18.8],[-94.8,18.6],[-94.4,18.1],[-93.5,18.4],[-92.8,18.5],[-92,18.7],[-91.4,18.9],[-90.8,19.3],[-90.5,19.9],[-90.5,20.7],[-90.3,21],[-89.6,21.3],[-88.5,21.5],[-87.7,21.5],[-87.1,21.5],[-86.8,21.3],[-86.8,20.8],[-87.4,20.3],[-87.6,19.6],[-87.4,19.5],[-87.6,19],[-87.8,18.3],[-88.1,18.5],[-88.3,18.5],[-88.3,18.4],[-88.1,18.3],[-88.1,18.1],[-88.3,17.6],[-88.2,17.5],[-88.3,17.1],[-88.2,17],[-88.4,16.5],[-88.6,16.3],[-88.7,16.2],[-88.9,15.9],[-88.6,15.7],[-88.5,15.9],[-88.2,15.7],[-88.1,15.7],[-87.9,15.9],[-87.6,15.9],[-87.5,15.8],[-87.4,15.8],[-86.9,15.8],[-86.4,15.8],[-86.1,15.9],[-86,16],[-85.7,16],[-85.4,15.9],[-85.2,15.9],[-85,16],[-84.5,15.9],[-84.4,15.8],[-84.1,15.6],[-83.8,15.4],[-83.4,15.3],[-83.1,15],[-83.2,14.9],[-83.3,14.7],[-83.2,14.3],[-83.4,14],[-83.5,13.6],[-83.6,13.1],[-83.5,12.9],[-83.5,12.4],[-83.6,12.3],[-83.7,11.9],[-83.7,11.6],[-83.9,11.4],[-83.8,11.1],[-83.7,10.9],[-83.4,10.4],[-83,10],[-82.5,9.6],[-82.2,9.2],[-82.2,9],[-81.8,9],[-81.7,9],[-81.4,8.8],[-80.9,8.9],[-80.5,9.1],[-79.9,9.3],[-79.6,9.6],[-79,9.6],[-79.1,9.5],[-78.5,9.4],[-78.1,9.2],[-77.7,8.9],[-77.4,8.7],[-76.8,8.6],[-76.1,9.3],[-75.7,9.4],[-75.7,9.8],[-75.5,10.6],[-74.9,11.1],[-74.3,11.1],[-74.2,11.3],[-73.4,11.2],[-72.6,11.7],[-72.2,12],[-71.8,12.4],[-71.4,12.4],[-71.1,12.1],[-71.3,11.8],[-71.4,11.5],[-71.9,11.4],[-71.6,11],[-71.6,10.4],[-72.1,9.9],[-71.7,9.1],[-71.3,9.1],[-71,9.9],[-71.4,10.2],[-71.4,11],[-70.2,11.4],[-70.3,11.8],[-69.9,12.2],[-69.6,11.5],[-68.9,11.4],[-68.2,10.9],[-68.2,10.6],[-67.3,10.5],[-66.2,10.6],[-65.7,10.2],[-64.9,10.1],[-64.3,10.4],[-64.3,10.6],[-63.1,10.7],[-61.9,10.7],[-62.7,10.4],[-62.4,9.9],[-61.6,9.9],[-60.8,9.4],[-60.7,8.6],[-60.2,8.6],[-59.8,8.4],[-59.1,8],[-58.5,7.3],[-58.5,6.8],[-58.1,6.8],[-57.5,6.3],[-57.1,6],[-55.9,5.8],[-55.8,6],[-55,6],[-54,5.8],[-53.6,5.6],[-52.9,5.4],[-51.8,4.6],[-51.7,4.2],[-51.3,4.2],[-51.1,3.6],[-50.5,1.9],[-50,1.7],[-49.9,1],[-50.7,0.2],[-50.4,-0.1],[-48.6,-0.2],[-48.6,-1.2],[-47.8,-0.6],[-46.6,-0.9],[-44.9,-1.6],[-44.4,-2.1],[-44.6,-2.7],[-43.4,-2.4],[-41.5,-2.9],[-40,-2.9],[-38.5,-3.7],[-37.2,-4.8],[-36.5,-5.1],[-35.6,-5.1],[-35.2,-5.5],[-34.9,-6.7],[-34.7,-7.3],[-35.1,-9],[-35.6,-9.6],[-37,-11],[-37.7,-12.2],[-38.4,-13],[-38.7,-13.1],[-39,-13.8],[-38.9,-15.7],[-39.2,-17.2],[-39.3,-17.9],[-39.6,-18.3],[-39.8,-19.6],[-40.8,-20.9],[-40.9,-21.9],[-41.8,-22.4],[-42,-23],[-43.1,-23],[-44.6,-23.4],[-45.4,-23.8],[-46.5,-24.1],[-47.6,-24.9],[-48.5,-25.9],[-48.6,-26.6],[-48.5,-27.2],[-48.7,-28.2],[-48.9,-28.7],[-49.6,-29.2],[-50.7,-31],[-51.6,-31.8],[-52.3,-32.2],[-52.7,-33.2],[-53.4,-33.8],[-53.8,-34.4],[-54.9,-35],[-55.7,-34.8],[-56.2,-34.9],[-57.1,-34.4],[-57.8,-34.5],[-58.4,-33.9],[-58.5,-34.4],[-57.2,-35.3],[-57.4,-36],[-56.7,-36.4],[-56.8,-36.9],[-57.7,-38.2],[-59.2,-38.7],[-61.2,-38.9],[-62.3,-38.8],[-62.1,-39.4],[-62.3,-40.2],[-62.1,-40.7],[-62.7,-41],[-63.8,-41.2],[-64.7,-40.8],[-65.1,-41.1],[-65,-42.1],[-64.3,-42.4],[-63.8,-42],[-63.5,-42.6],[-64.4,-42.9],[-65.2,-43.5],[-65.3,-44.5],[-65.6,-45],[-66.5,-45],[-67.3,-45.6],[-67.6,-46.3],[-66.6,-47],[-65.6,-47.2],[-66,-48.1],[-67.2,-48.7],[-67.8,-49.9],[-68.7,-50.3],[-69.1,-50.7],[-68.8,-51.8],[-68.2,-52.4],[-68.6,-52.3],[-69.5,-52.3],[-69.9,-52.5],[-70.8,-52.9],[-71,-53.8],[-71.4,-53.9],[-72.6,-53.5],[-73.7,-52.8],[-74.9,-52.3],[-75.3,-51.6],[-75,-51],[-75.5,-50.4],[-75.6,-48.7],[-75.2,-47.7],[-74.1,-46.9],[-75.6,-46.6],[-74.7,-45.8],[-74.4,-44.1],[-73.2,-44.5],[-72.7,-42.4],[-73.4,-42.1],[-73.7,-43.4],[-74.3,-43.2],[-74,-41.8],[-73.7,-39.9],[-73.2,-39.3],[-73.5,-38.3],[-73.6,-37.2],[-73.2,-37.1],[-72.6,-35.5],[-71.9,-33.9],[-71.4,-32.4],[-71.7,-30.9],[-71.4,-30.1],[-71.5,-28.9],[-70.9,-27.6],[-70.7,-25.7],[-70.4,-23.6],[-70.1,-21.4],[-70.2,-19.8],[-70.4,-18.3],[-71.4,-17.8],[-71.5,-17.4],[-73.4,-16.4],[-75.2,-15.3],[-76,-14.6],[-76.4,-13.8],[-76.3,-13.5],[-77.1,-12.2],[-78.1,-10.4],[-79,-8.4],[-79.4,-7.9],[-79.8,-7.2],[-80.5,-6.5],[-81.3,-6.1],[-80.9,-5.7],[-81.4,-4.7],[-81.1,-4],[-80.3,-3.4],[-79.8,-2.7],[-80,-2.2],[-80.4,-2.7],[-81,-2.2],[-80.8,-2],[-80.9,-1.1],[-80.6,-0.9],[-80.4,-0.3],[-80,0.4],[-80.1,0.8],[-79.5,1],[-78.9,1.4],[-79,1.7],[-78.6,1.8],[-78.7,2.3],[-78.4,2.6],[-77.9,2.7],[-77.5,3.3],[-77.1,3.8],[-77.5,4.1],[-77.3,4.7],[-77.5,5.6],[-77.3,5.8],[-77.5,6.7],[-77.9,7.2],[-78.2,7.5],[-78.4,8.1],[-78.2,8.3],[-78.4,8.4],[-78.6,8.7],[-79.1,9],[-79.6,8.9],[-79.8,8.6],[-80.2,8.3],[-80.4,8.3],[-80.5,8.1],[-80,7.5],[-80.3,7.4],[-80.4,7.3],[-80.9,7.2],[-81.1,7.8],[-81.2,7.6],[-81.5,7.7],[-81.7,8.1],[-82.1,8.2],[-82.4,8.3],[-82.8,8.3],[-82.8,8.1],[-83,8.2],[-83.5,8.4],[-83.7,8.7],[-83.6,8.8],[-83.6,9.1],[-83.9,9.3],[-84.3,9.5],[-84.6,9.6],[-84.7,9.9],[-85,10.1],[-84.9,9.8],[-85.1,9.6],[-85.3,9.8],[-85.7,9.9],[-85.8,10.1],[-85.8,10.4],[-85.7,10.8],[-85.9,10.9],[-85.7,11.1],[-86.1,11.4],[-86.5,11.8],[-86.7,12.1],[-87.2,12.5],[-87.7,12.9],[-87.6,13.1],[-87.4,12.9],[-87.3,13],[-87.5,13.3],[-87.8,13.4],[-87.9,13.1],[-88.5,13.2],[-88.8,13.3],[-89.3,13.5],[-89.8,13.5],[-90.1,13.7],[-90.6,13.9],[-91.2,13.9],[-91.7,14.1],[-92.2,14.5],[-93.4,15.6],[-93.9,15.9],[-94.7,16.2],[-95.3,16.1],[-96.1,15.8],[-96.6,15.7],[-97.3,15.9],[-98,16.1],[-98.9,16.6],[-99.7,16.7],[-100.8,17.2],[-101.7,17.6],[-101.9,17.9],[-102.5,18],[-103.5,18.3],[-103.9,18.7],[-105,19.3],[-105.5,19.9],[-105.7,20.4],[-105.4,20.5],[-105.5,20.8],[-105.3,21.1],[-105.3,21.4],[-105.6,21.9],[-105.7,22.3],[-106,22.8],[-106.9,23.8],[-107.9,24.5],[-108.4,25.2],[-109.3,25.6],[-109.4,25.8],[-109.3,26.4],[-109.8,26.7],[-110.4,27.2],[-110.6,27.9],[-111.2,27.9],[-111.8,28.5],[-112.2,29],[-112.3,29.3],[-112.8,30],[-113.2,30.8],[-113.1,31.2],[-113.9,31.6],[-114.2,31.5],[-114.8,31.8],[-114.9,31.4],[-114.8,30.9],[-114.7,30.2],[-114.3,29.8],[-113.6,29.1],[-113.4,28.8],[-113.3,28.8],[-113.1,28.4],[-113,28.4],[-112.8,27.8],[-112.5,27.5],[-112.2,27.2],[-111.6,26.7],[-111.3,25.7],[-111,25.3],[-110.7,24.8],[-110.7,24.3],[-110.2,24.3],[-109.8,23.8],[-109.4,23.4],[-109.4,23.2],[-109.9,22.8],[-110,22.8],[-110.3,23.4],[-111,24],[-111.7,24.5],[-112.2,24.7],[-112.2,25.5],[-112.3,26],[-112.8,26.3],[-113.5,26.8],[-113.6,26.6],[-113.8,26.9],[-114.5,27.1],[-115.1,27.7],[-115,27.8],[-114.6,27.7],[-114.2,28.1],[-114.2,28.6],[-114.9,29.3],[-115.5,29.6],[-115.9,30.2],[-116.3,30.8],[-116.7,31.6],[-117.1,32.5],[-117.3,33],[-117.9,33.6],[-118.4,33.7],[-118.5,34],[-119.1,34.1],[-119.4,34.3],[-120.4,34.4],[-120.6,34.6],[-120.7,35.2],[-121.7,36.2],[-122.5,37.6],[-122.5,37.8],[-123,38.1],[-123.7,39],[-123.9,39.8],[-124.4,40.3],[-124.2,41.1],[-124.2,42],[-124.5,42.8],[-124.1,43.7],[-123.9,45.5],[-124.1,46.9],[-124.4,47.7],[-124.7,48.2],[-124.6,48.4],[-123.1,48],[-122.6,47.1],[-122.3,47.4],[-122.5,48.2],[-122.8,49],[-123,49],[-124.9,50],[-125.6,50.4],[-127.4,50.8],[-128,51.7],[-127.8,52.3],[-129.1,52.8],[-129.3,53.6],[-130.5,54.3],[-130.5,54.8],[-131.1,55.2],[-132,55.5],[-132.2,56.4],[-133.5,57.2],[-134.1,58.1],[-135,58.2],[-136.6,58.2],[-137.8,58.5],[-139.9,59.5],[-140.8,59.7],[-142.6,60.1],[-144,60],[-145.9,60.5],[-147.1,60.9],[-148.2,60.7],[-148,60],[-148.6,59.9],[-149.7,59.7],[-150.6,59.4],[-151.7,59.2],[-151.9,59.7],[-151.4,60.7],[-150.3,61],[-150.6,61.3],[-151.9,60.7],[-152.6,60.1],[-154,59.4],[-153.3,58.9],[-154.2,58.1],[-155.3,57.7],[-156.3,57.4],[-156.6,57],[-158.1,56.5],[-158.4,56],[-159.6,55.6],[-160.3,55.6],[-161.2,55.4],[-162.2,55],[-163.1,54.7],[-164.8,54.4],[-164.9,54.6],[-163.8,55],[-162.9,55.3],[-161.8,55.9],[-160.6,56],[-160.1,56.4],[-158.7,57],[-158.5,57.2],[-157.7,57.6],[-157.6,58.3],[-157,58.9],[-158.2,58.6],[-158.5,58.8],[-159.1,58.4],[-159.7,58.9],[-160,58.6],[-160.4,59.1],[-161.4,58.7],[-162,58.7],[-162.1,59.3],[-161.9,59.6],[-162.5,60],[-163.8,59.8],[-164.7,60.3],[-165.3,60.5],[-165.4,61.1],[-166.1,61.5],[-165.7,62.1],[-164.9,62.6],[-164.6,63.1],[-163.8,63.2],[-163.1,63.1],[-162.3,63.5],[-161.5,63.5],[-160.8,63.8],[-161,64.2],[-161.5,64.4],[-160.8,64.8],[-161.4,64.8],[-162.5,64.6],[-162.8,64.3],[-163.5,64.6],[-165,64.4],[-166.4,64.7],[-166.8,65.1],[-168.1,65.7],[-166.7,66.1],[-164.5,66.6],[-163.7,66.6],[-163.8,66.1],[-161.7,66.1],[-162.5,66.7],[-163.7,67.1],[-164.4,67.6],[-165.4,68],[-166.8,68.4],[-166.2,68.9],[-164.4,68.9],[-163.2,69.4],[-162.9,69.9],[-161.9,70.3],[-160.9,70.4],[-159,70.9],[-158.1,70.8],[-156.6,71.4],[-155.1,71.1],[-154.3,70.7],[-153.9,70.9],[-152.2,70.8],[-152.3,70.6],[-150.7,70.4],[-149.7,70.5],[-147.6,70.2],[-145.7,70.1],[-144.9,70],[-143.6,70.2],[-142.1,69.9],[-141,69.7],[-139.1,69.5],[-137.5,69],[-136.5,68.9],[-135.6,69.3],[-134.4,69.6],[-132.9,69.5],[-131.4,69.9],[-129.8,70.2],[-129.1,69.8],[-128.4,70],[-128.1,70.5],[-127.4,70.4],[-125.8,69.5],[-124.4,70.2],[-124.3,69.4],[-123.1,69.6],[-122.7,69.9],[-121.5,69.8],[-119.9,69.4],[-117.6,69],[-116.2,68.8],[-115.2,68.9],[-113.9,68.4],[-115.3,67.9],[-113.5,67.7],[-110.8,67.8],[-109.9,68],[-108.9,67.4],[-107.8,67.9],[-108.8,68.3],[-108.2,68.7],[-107,68.7],[-106.1,68.8],[-105.3,68.6],[-104.3,68],[-103.2,68.1],[-101.5,67.6],[-99.9,67.8],[-98.4,67.8],[-98.6,68.4],[-97.7,68.6],[-96.1,68.2],[-96.1,67.3],[-95.5,68.1],[-94.7,68.1],[-94.2,69.1],[-95.3,69.7],[-96.5,70.1],[-96.4,71.2],[-95.2,71.9],[-93.9,71.8],[-92.9,71.3],[-91.5,70.2],[-92.4,69.7],[-90.5,69.5]]],[[[-114.2,73.1],[-114.7,72.7],[-112.4,73],[-111.1,72.5],[-109.9,73],[-109,72.6],[-108.2,71.7],[-107.7,72.1],[-108.4,73.1],[-107.5,73.2],[-106.5,73.1],[-105.4,72.7],[-104.8,71.7],[-104.5,71],[-102.8,70.5],[-101,70],[-101.1,69.6],[-102.7,69.5],[-102.1,69.1],[-102.4,68.8],[-104.2,68.9],[-106,69.2],[-107.1,69.1],[-109,68.8],[-112,68.6],[-113.3,68.5],[-113.9,69],[-115.2,69.3],[-116.1,69.2],[-117.3,70],[-116.7,70.1],[-115.1,70.2],[-113.7,70.2],[-112.4,70.4],[-114.3,70.6],[-116.5,70.5],[-117.9,70.5],[-118.4,70.9],[-116.1,71.3],[-117.7,71.3],[-119.4,71.6],[-118.6,72.3],[-117.9,72.7],[-115.2,73.3],[-114.2,73.1]]],[[[-104.5,73.4],[-105.4,72.8],[-106.9,73.5],[-106.6,73.6],[-105.3,73.6],[-104.5,73.4]]],[[[-76.3,73.1],[-76.3,72.8],[-77.3,72.9],[-78.4,72.9],[-79.5,72.7],[-79.8,72.8],[-80.9,73.3],[-80.8,73.7],[-80.4,73.8],[-78.1,73.7],[-76.3,73.1]]],[[[-86.6,73.2],[-85.8,72.5],[-84.9,73.3],[-82.3,73.8],[-80.6,72.7],[-80.8,72.1],[-78.8,72.4],[-77.8,72.8],[-75.6,72.2],[-74.2,71.8],[-74.1,71.3],[-72.2,71.6],[-71.2,70.9],[-68.8,70.5],[-67.9,70.1],[-67,69.2],[-68.8,68.7],[-66.5,68.1],[-64.9,67.8],[-63.4,66.9],[-61.9,66.9],[-62.2,66.2],[-63.9,65],[-65.1,65.4],[-66.7,66.4],[-68,66.3],[-68.1,65.7],[-67.1,65.1],[-65.7,64.6],[-65.3,64.4],[-64.7,63.4],[-65,62.7],[-66.3,62.9],[-68.8,63.7],[-67.4,62.9],[-66.3,62.3],[-66.2,61.9],[-68.9,62.3],[-71,62.9],[-72.2,63.4],[-71.9,63.7],[-73.4,64.2],[-74.8,64.7],[-74.8,64.4],[-77.7,64.2],[-78.6,64.6],[-77.9,65.3],[-76,65.3],[-74,65.5],[-74.3,65.8],[-73.9,66.3],[-72.7,67.3],[-72.9,67.7],[-73.3,68.1],[-74.8,68.6],[-76.9,68.9],[-76.2,69.1],[-77.3,69.8],[-78.2,69.8],[-79,70.2],[-79.5,69.9],[-81.3,69.7],[-84.9,70],[-87.1,70.3],[-88.7,70.4],[-89.5,70.8],[-88.5,71.2],[-89.9,71.2],[-90.2,72.2],[-89.4,73.1],[-88.4,73.5],[-85.8,73.8],[-86.6,73.2]]],[[[-100.4,73.8],[-99.2,73.6],[-97.4,73.8],[-97.1,73.5],[-98.1,73],[-96.5,72.6],[-96.7,71.7],[-98.4,71.3],[-99.3,71.4],[-100,71.7],[-102.5,72.5],[-102.5,72.8],[-100.4,72.7],[-101.5,73.4],[-100.4,73.8]]],[[[143.6,73.2],[142.1,73.2],[140,73.3],[139.9,73.4],[140.8,73.8],[142.1,73.9],[143.5,73.5],[143.6,73.2]]],[[[-93.2,72.8],[-94.3,72],[-95.4,72.1],[-96,72.9],[-96,73.4],[-95.5,73.9],[-94.5,74.1],[-92.4,74.1],[-90.5,73.9],[-92,73],[-93.2,72.8]]],[[[-120.5,71.4],[-123.1,70.9],[-123.6,71.3],[-125.9,71.9],[-125.6,72.2],[-124.8,73],[-123.9,73.7],[-124.9,74.3],[-121.5,74.4],[-120.1,74.2],[-117.6,74.2],[-116.6,73.9],[-115.5,73.5],[-116.8,73.2],[-119.2,72.5],[-120.5,71.8],[-120.5,71.4]]],[[[150.7,75.1],[149.6,74.7],[148,74.8],[146.1,75.2],[146.4,75.5],[148.2,75.3],[150.7,75.1]]],[[[-93.6,75],[-94.2,74.6],[-95.6,74.7],[-96.8,74.9],[-96.3,75.4],[-94.9,75.6],[-94,75.3],[-93.6,75]]],[[[145.1,75.6],[144.3,74.8],[140.6,74.8],[139,74.6],[137,75.3],[137.5,75.9],[138.8,76.1],[141.5,76.1],[145.1,75.6]]],[[[-98.5,76.7],[-97.7,76.3],[-97.7,75.7],[-98.2,75],[-99.8,74.9],[-100.9,75.1],[-100.9,75.6],[-102.5,75.6],[-102.6,76.3],[-101.5,76.3],[-100,76.6],[-98.6,76.6],[-98.5,76.7]]],[[[-108.2,76.2],[-107.8,75.8],[-106.9,76],[-105.9,76],[-105.7,75.5],[-106.3,75],[-109.7,74.9],[-112.2,74.4],[-113.7,74.4],[-113.9,74.7],[-111.8,75.2],[-116.3,75],[-117.7,75.2],[-116.3,76.2],[-115.4,76.5],[-112.6,76.1],[-110.8,75.5],[-109.1,75.5],[-110.5,76.4],[-109.6,76.8],[-108.6,76.7],[-108.2,76.2]]],[[[57.5,70.7],[56.9,70.6],[53.7,70.8],[53.4,71.2],[51.6,71.5],[51.5,72],[52.5,72.2],[52.4,72.8],[54.4,73.6],[53.5,73.8],[55.9,74.6],[55.6,75.1],[57.9,75.6],[61.2,76.3],[64.5,76.4],[66.2,76.8],[68.2,76.9],[68.9,76.5],[68.2,76.2],[64.6,75.7],[61.6,75.3],[58.5,74.3],[57,73.3],[55.4,72.4],[55.6,71.5],[57.5,70.7]]],[[[-94.7,77.1],[-93.6,76.8],[-91.6,76.8],[-90.7,76.5],[-91,76.1],[-89.8,75.8],[-89.2,75.6],[-87.8,75.6],[-86.4,75.5],[-84.8,75.7],[-82.8,75.8],[-81.1,75.7],[-80.1,75.3],[-79.8,74.9],[-80.5,74.7],[-81.9,74.4],[-83.2,74.6],[-86.1,74.4],[-88.1,74.4],[-89.8,74.5],[-92.4,74.8],[-92.8,75.4],[-92.9,75.9],[-93.9,76.3],[-96,76.4],[-97.1,76.8],[-96.7,77.2],[-94.7,77.1]]],[[[-116.2,77.6],[-116.3,76.9],[-117.1,76.5],[-118,76.5],[-119.9,76.1],[-121.5,75.9],[-122.9,76.1],[-121.2,76.9],[-119.1,77.5],[-117.6,77.5],[-116.2,77.6]]],[[[-93.8,77.5],[-94.3,77.5],[-96.2,77.6],[-96.4,77.8],[-94.4,77.8],[-93.7,77.6],[-93.8,77.5]]],[[[-110.2,77.7],[-112.1,77.4],[-113.5,77.7],[-112.7,78.1],[-111.3,78.2],[-109.9,78],[-110.2,77.7]]],[[[24.7,77.9],[22.5,77.4],[20.7,77.7],[21.4,77.9],[20.8,78.3],[22.9,78.5],[23.3,78.1],[24.7,77.9]]],[[[-109.7,78.6],[-110.9,78.4],[-112.5,78.4],[-112.5,78.6],[-111.5,78.9],[-111,78.8],[-109.7,78.6]]],[[[-95.8,78.1],[-97.3,77.8],[-98.1,78.1],[-98.6,78.5],[-98.6,78.9],[-97.3,78.8],[-96.8,78.8],[-95.6,78.4],[-95.8,78.1]]],[[[-100.1,78.3],[-99.7,77.9],[-101.3,78],[-102.9,78.3],[-105.2,78.4],[-104.2,78.7],[-105.4,78.9],[-105.5,79.3],[-103.5,79.2],[-100.8,78.8],[-100.1,78.3]]],[[[105.1,78.3],[99.4,77.9],[101.3,79.2],[102.1,79.3],[102.8,79.3],[105.4,78.7],[105.1,78.3]]],[[[18.3,79.7],[21.5,79],[19,78.6],[18.5,77.8],[17.6,77.6],[17.1,76.8],[15.9,76.8],[13.8,77.4],[14.7,77.7],[13.2,78],[11.2,78.9],[10.4,79.7],[13.2,80],[13.7,79.7],[15.1,79.7],[15.5,80],[17,80.1],[18.3,79.7]]],[[[25.4,80.4],[27.4,80.1],[25.9,79.5],[23,79.4],[20.1,79.6],[19.9,79.8],[18.5,79.9],[17.4,80.3],[20.5,80.6],[21.9,80.4],[22.9,80.7],[25.4,80.4]]],[[[51.1,80.5],[49.8,80.4],[48.9,80.3],[48.8,80.2],[47.6,80],[46.5,80.2],[47.1,80.6],[44.8,80.6],[46.8,80.8],[48.3,80.8],[48.5,80.5],[49.1,80.8],[50,80.9],[51.5,80.7],[51.1,80.5]]],[[[99.9,78.9],[97.8,78.8],[95,79],[93.3,79.4],[92.5,80.1],[91.2,80.3],[93.8,81],[95.9,81.3],[97.9,80.7],[100.2,79.8],[99.9,78.9]]],[[[-87,79.7],[-85.8,79.3],[-87.2,79],[-89,78.3],[-90.8,78.2],[-92.9,78.3],[-94,78.8],[-93.9,79.1],[-93.1,79.4],[-95,79.4],[-96.1,79.7],[-96.7,80.2],[-96,80.6],[-95.3,80.9],[-94.3,81],[-94.7,81.2],[-92.4,81.3],[-91.1,80.7],[-89.4,80.5],[-87.8,80.3],[-87,79.7]]],[[[-68.5,83.1],[-65.8,83],[-63.7,82.9],[-61.9,82.6],[-61.9,82.4],[-64.3,81.9],[-66.8,81.7],[-67.7,81.5],[-65.5,81.5],[-67.8,80.9],[-69.5,80.6],[-71.2,79.8],[-73.2,79.6],[-73.9,79.4],[-76.9,79.3],[-75.5,79.2],[-76.2,79],[-75.4,78.5],[-76.3,78.2],[-77.9,77.9],[-78.4,77.5],[-79.8,77.2],[-79.6,77],[-77.9,77],[-77.9,76.8],[-80.6,76.2],[-83.2,76.5],[-86.1,76.3],[-87.6,76.4],[-89.5,76.5],[-89.6,77],[-87.8,77.2],[-88.3,77.9],[-87.6,78],[-85,77.5],[-86.3,78.2],[-88,78.4],[-87.2,78.8],[-85.4,79],[-85.1,79.3],[-86.5,79.7],[-86.9,80.3],[-84.2,80.2],[-83.4,80.1],[-81.8,80.5],[-84.1,80.6],[-87.6,80.5],[-89.4,80.9],[-90.2,81.3],[-91.4,81.6],[-91.6,81.9],[-90.1,82.1],[-88.9,82.1],[-87,82.3],[-85.5,82.7],[-84.3,82.6],[-83.2,82.3],[-82.4,82.9],[-81.1,83],[-79.3,83.1],[-76.3,83.2],[-75.7,83.1],[-72.8,83.2],[-70.7,83.2],[-68.5,83.1]]],[[[-27.1,83.5],[-20.8,82.7],[-22.7,82.3],[-26.5,82.3],[-31.9,82.2],[-31.4,82],[-27.9,82.1],[-24.8,81.8],[-22.9,82.1],[-22.1,81.7],[-23.2,81.2],[-20.6,81.5],[-15.8,81.9],[-12.8,81.7],[-12.2,81.3],[-16.3,80.6],[-16.8,80.3],[-20,80.2],[-17.7,80.1],[-18.9,79.4],[-19.7,78.8],[-19.7,77.6],[-18.5,77],[-20,76.9],[-21.7,76.6],[-19.8,76.1],[-19.6,75.2],[-20.7,75.2],[-19.4,74.3],[-21.6,74.2],[-20.4,73.8],[-20.8,73.5],[-22.2,73.3],[-23.6,73.3],[-22.3,72.6],[-22.3,72.2],[-24.3,72.6],[-24.8,72.3],[-23.4,72.1],[-22.1,71.5],[-21.8,70.7],[-23.5,70.5],[-24.3,70.9],[-25.5,71.4],[-25.2,70.8],[-26.4,70.2],[-23.7,70.2],[-22.3,70.1],[-25,69.3],[-27.7,68.5],[-30.7,68.1],[-31.8,68.1],[-32.8,67.7],[-34.2,66.7],[-36.4,66],[-37,65.9],[-38.4,65.7],[-39.8,65.5],[-40.7,64.8],[-40.7,64.1],[-41.2,63.5],[-42.8,62.7],[-42.4,61.9],[-42.9,61.1],[-43.4,60.1],[-44.8,60],[-46.3,60.9],[-48.3,60.9],[-49.2,61.4],[-49.9,62.4],[-51.6,63.6],[-52.1,64.3],[-52.3,65.2],[-53.7,66.1],[-53.3,66.8],[-54,67.2],[-53,68.4],[-51.5,68.7],[-51.1,69.1],[-50.9,69.9],[-52,69.6],[-52.6,69.4],[-53.5,69.3],[-54.7,69.6],[-54.8,70.3],[-54.4,70.8],[-53.4,70.8],[-51.4,70.6],[-53.1,71.2],[-54,71.5],[-55,71.4],[-55.8,71.7],[-54.7,72.6],[-55.3,73],[-56.1,73.7],[-57.3,74.7],[-58.6,75.1],[-58.6,75.5],[-61.3,76.1],[-63.4,76.2],[-66.1,76.1],[-68.5,76.1],[-69.7,76.4],[-71.4,77],[-68.8,77.3],[-66.8,77.4],[-71,77.6],[-73.3,78],[-73.2,78.4],[-69.4,78.9],[-65.7,79.4],[-65.3,79.8],[-68,80.1],[-67.1,80.5],[-63.7,81.2],[-62.2,81.3],[-62.6,81.8],[-60.3,82],[-57.2,82.2],[-54.1,82.2],[-53,81.9],[-50.4,82.4],[-48,82.1],[-46.6,82],[-44.5,81.7],[-46.9,82.2],[-46.8,82.6],[-43.4,83.2],[-39.9,83.2],[-38.6,83.5],[-35.1,83.6],[-27.1,83.5]]]]}};
+
+/* ---------------- consultants ---------------- */
+const PEOPLE = [
+  { id:"wu", img:"img/wu.jpg", fx:"83.9%", fy:"26.4%", name:"吳曉琪", mark:"琪", color:"var(--gold)", role:"Strategy Consultant", type:"策略型顧問",
+    phase:"訓練前", service:"策略對齊", serviceEn:"Strategic Alignment",
+    serviceDesc:"盤點組織需求與績效缺口，確認訓練要解決的真實問題，讓每一項課程都有明確目的。",
+    pos:"善於從複雜問題中找出核心需求，以全局視角思考訓練與組織績效之間的關係。",
+    me:["大家好，我是吳曉琪，T-Move 團隊中的策略型顧問。我習慣從「為什麼」開始思考，因為在規劃訓練之前，我們更需要知道組織真正想解決的是什麼問題。"],
+    talent:["我擅長盤點組織需求、分析工作績效缺口，並將訓練目標與組織發展方向連結，讓每一項訓練都有明確的目的與預期成果。"],
+    value:["今天，我希望帶大家重新思考：我們辦理訓練，究竟是為了完成一場課程，還是為了解決工作上的問題？","讓我們從正確的問題出發，設計真正支持組織績效的訓練方案。"],
+    slogan:"訓練從需求出發，移轉才有明確方向。",
+    steps:["用一句話寫下這次訓練要解決的工作問題","與直屬主管確認一項可觀察的績效缺口","把課程目標對應到部門年度目標"] },
+  { id:"mai", img:"img/mai.jpg", fx:"85.7%", fy:"20.6%", name:"買祈嘉", mark:"嘉", color:"var(--coral)", role:"Execution Consultant", type:"執行型顧問",
+    phase:"訓練中 → 現場", service:"學習移轉", serviceEn:"Learning Transfer",
+    serviceDesc:"把課程內容轉成具體的工作任務、行動計畫與現場工具，讓學員回到崗位做得出來。",
+    pos:"務實、重視效率與執行細節，擅長將策略轉化為具體的工作任務、行動計畫與現場應用機制。",
+    me:["大家好，我是買祈嘉，T-Move 團隊中的執行型顧問。我最常思考的一個問題是：學員在課堂上學會了，回到工作現場之後，真的做得出來嗎？"],
+    talent:["我擅長將訓練內容轉化為具體的工作任務與行動計畫，透過流程設計、實作練習與應用工具，協助學員將課堂所學帶回真實工作情境。"],
+    value:["今天，我希望帶大家跨越「知道」與「做到」之間的距離。","我們不只是討論訓練移轉為什麼重要，更要一起找出回到工作現場後，可以立即採取的第一步行動。"],
+    slogan:"從知道到做到，讓學習在工作現場真正發生。",
+    steps:["把課程內容拆成一項本週可以完成的工作任務","填寫個人行動計畫：做什麼、何時做、卡關時找誰","準備一張回到現場就能用的檢核表或工具卡"] },
+  { id:"zheng", img:"img/zheng.jpg", fx:"79.7%", fy:"15.4%", name:"鄭偉辰", mark:"辰", color:"var(--lilac)", role:"Talent Consultant", type:"人才型顧問",
+    phase:"回到工作現場", service:"人才文化", serviceEn:"Talent & Culture",
+    serviceDesc:"透過主管支持、同儕協作與正向回饋，營造讓人願意、也有機會持續使用所學的環境。",
+    pos:"善於觀察人的需求與行為，重視學習動機、心理支持與組織文化，協助建立能夠持續應用所學的工作環境。",
+    me:["大家好，我是鄭偉辰，T-Move 團隊中的人才型顧問。我相信，訓練移轉不只是學會一項技能，更重要的是讓人有意願、有信心，也有機會在工作中使用它。"],
+    talent:["我擅長從成人學習動機、人才發展與組織支持的角度，分析影響訓練移轉的關鍵因素，並透過主管支持、同儕協作與正向回饋，營造鼓勵實踐的工作環境。"],
+    value:["今天，我想和大家一起思考：當學員已經具備能力，為什麼回到工作現場後，卻不一定願意或能夠使用？","讓我們從人的動機與工作環境出發，找到支持行為改變的方法，讓學習不只被應用，更能持續下去。"],
+    slogan:"讓人願意改變，讓環境支持改變。",
+    steps:["邀請直屬主管在課後一週安排 15 分鐘回饋對話","組成 2 至 3 人的應用夥伴小組，互相提醒與分享","在團隊會議中公開肯定一次新做法的嘗試"] },
+  { id:"li", img:"img/li.jpg", fx:"84.3%", fy:"25%", name:"李沛榕", mark:"榕", color:"var(--teal)", role:"Data Consultant", type:"數據型顧問",
+    phase:"持續追蹤", service:"成效驗證", serviceEn:"Impact Evaluation",
+    serviceDesc:"設計可觀察、可衡量的行為與成效指標，用證據確認工作表現是否真的改變。",
+    pos:"理性、細膩，重視資料與事實，擅長將抽象的學習成果轉化為可觀察、可衡量的成效指標。",
+    me:["大家好，我是李沛榕，T-Move 團隊中的數據型顧問。我相信，訓練的價值不應該只停留在課後滿意度，而是要進一步了解學習是否改變了工作行為。"],
+    talent:["我擅長設計訓練成效指標、分析學習前後的變化，並運用工作行為觀察與成效追蹤，協助團隊判斷訓練成果是否真正轉化為工作表現。"],
+    value:["今天，我希望帶大家從「學員覺得課程好不好」，進一步思考「學員回到工作崗位後，有沒有真的改變」。","讓我們用具體的證據，看見訓練帶來的改變，也找出持續改善的方向。"],
+    slogan:"不只看見學習成果，更要驗證工作改變。",
+    steps:["為一項訓練目標定義課後 30 天可觀察的行為指標","在開課前蒐集一次基準資料，方便前後比較","排定 30、60、90 天的追蹤時間點與負責人"] }
+];
+
+const faceStyle=p=>`--img:url('${p.img}');--fx:${p.fx};--fy:${p.fy}`;
+/* ---------------- route of services ---------------- */
+const route = document.getElementById("route");
+route.innerHTML = PEOPLE.map((p,i)=>`
+  <div class="stop" style="--c:${p.color}">
+    <div class="pin">0${i+1}</div>
+    <div class="phase">${p.phase}</div>
+    <h3>${p.service}<small>${p.serviceEn}</small></h3>
+    <p>${p.serviceDesc}</p>
+    <button class="who" type="button" data-go="${p.id}"><span class="av face" style="${faceStyle(p)}" aria-hidden="true">${p.mark}</span><span>${p.name}・${p.type}</span></button>
+  </div>`).join("");
+document.getElementById("gallery").innerHTML=PEOPLE.map(p=>`<button type="button" data-zoom="${p.img}" aria-label="放大 ${p.name} 的工作坊介紹卡"><img src="${p.img}" alt="${p.name}・${p.type}工作坊介紹卡" loading="lazy"></button>`).join("");
+route.addEventListener("click",e=>{
+  const b=e.target.closest("[data-go]"); if(!b) return;
+  select(b.dataset.go,true);
+  document.getElementById("faculty").scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});
+});
+
+/* lightbox */
+let lastFocus=null;
+document.addEventListener("click",e=>{
+  const z=e.target.closest("[data-zoom]");
+  if(z){ lastFocus=z; const lb=document.createElement("div"); lb.className="lb"; lb.setAttribute("role","dialog"); lb.setAttribute("aria-modal","true");
+    lb.innerHTML=`<img src="${z.dataset.zoom}" alt="${z.querySelector('img').alt}"><button class="x" type="button">關閉 ✕</button>`;
+    document.body.appendChild(lb); lb.querySelector(".x").focus(); return; }
+  const lb=e.target.closest(".lb"); if(lb && (e.target===lb||e.target.closest(".x"))){ lb.remove(); lastFocus&&lastFocus.focus(); }
+});
+document.addEventListener("keydown",e=>{ if(e.key==="Escape"){const lb=document.querySelector(".lb"); if(lb){lb.remove(); lastFocus&&lastFocus.focus();}} });
+/* ---------------- faculty ---------------- */
+const roster=document.getElementById("roster"), profile=document.getElementById("profile");
+roster.innerHTML = PEOPLE.map(p=>`
+  <button class="rbtn" role="tab" id="tab-${p.id}" data-id="${p.id}" style="--c:${p.color}" aria-selected="false">
+    <span class="av" aria-hidden="true">${p.mark}</span>
+    <span><b>${p.name}</b><small>${p.type}｜${p.service}</small></span>
+  </button>`).join("");
+let current=0;
+function select(id,focus){
+  const i=PEOPLE.findIndex(p=>p.id===id); if(i<0) return; current=i; const p=PEOPLE[i];
+  roster.querySelectorAll(".rbtn").forEach(b=>b.setAttribute("aria-selected", b.dataset.id===id));
+  profile.style.setProperty("--c",p.color);
+  profile.dataset.big=p.mark;
+  profile.setAttribute("aria-labelledby","tab-"+p.id);
+  const paras=a=>a.map(t=>`<p>${t}</p>`).join("");
+  profile.innerHTML=`
+    <div class="p-top fade-in">
+      <div class="p-av face" style="${faceStyle(p)}" aria-hidden="true">${p.mark}</div>
+      <div>
+        <div class="p-role">${p.role}・${p.type}</div>
+        <h3 class="p-name">${p.name}</h3>
+        <p class="p-pos">${p.pos}</p>
+      </div>
+    </div>
+    <figure class="card-fig fade-in"><button type="button" data-zoom="${p.img}" aria-label="放大 ${p.name} 的工作坊介紹卡"><img src="${p.img}" alt="${p.name}・${p.type}工作坊介紹卡"></button><figcaption>工作坊介紹卡・點擊放大</figcaption></figure>
+    <div class="legs fade-in" style="animation-delay:.08s">
+      <div class="leg"><span class="dot"></span><div><h4>出發點<span>關於我</span></h4>${paras(p.me)}</div></div>
+      <div class="leg"><span class="dot"></span><div><h4>隨身行囊<span>我擅長的事</span></h4>${paras(p.talent)}</div></div>
+      <div class="leg"><span class="dot"></span><div><h4>抵達之處<span>我想帶你去的地方</span></h4>${paras(p.value)}</div></div>
+    </div>
+    <p class="slogan fade-in" style="animation-delay:.16s">${p.slogan}</p>
+    <div class="p-nav">
+      <button type="button" data-step="-1">← ${PEOPLE[(i+3)%4].name}</button>
+      <span class="mono">${i+1} / 4</span>
+      <button type="button" data-step="1">${PEOPLE[(i+1)%4].name} →</button>
+    </div>`;
+  if(focus) document.getElementById("tab-"+id).focus({preventScroll:true});
+}
+roster.addEventListener("click",e=>{const b=e.target.closest(".rbtn"); if(b) select(b.dataset.id);});
+roster.addEventListener("keydown",e=>{
+  if(!["ArrowDown","ArrowUp","ArrowLeft","ArrowRight"].includes(e.key)) return;
+  e.preventDefault(); const d=(e.key==="ArrowDown"||e.key==="ArrowRight")?1:-1;
+  select(PEOPLE[(current+d+4)%4].id,true);
+});
+profile.addEventListener("click",e=>{const b=e.target.closest("[data-step]"); if(b) select(PEOPLE[(current+ +b.dataset.step+4)%4].id);});
+select("wu");
+
+/* ---------------- promo film ---------------- */
+(function(){
+  const v=document.getElementById("promo"), btn=document.getElementById("playPromo");
+  function start(){ btn.hidden=true; v.controls=true; const p=v.play(); if(p&&p.catch) p.catch(()=>{ btn.hidden=false; v.controls=false; }); }
+  btn.addEventListener("click",start);
+  v.addEventListener("ended",()=>{ v.controls=false; btn.hidden=false; v.currentTime=0; v.load(); });
+  document.getElementById("heroPlay").addEventListener("click",e=>{
+    e.preventDefault();
+    document.getElementById("film").scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"center"});
+    start();
+  });
+})();
+
+/* ---------------- map ---------------- */
+(function(){
+  const canvas=document.getElementById("globe"), box=document.getElementById("map");
+  const ctx=canvas.getContext("2d");
+  const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if(!window.d3){ return; }
+  const ORIGIN=[120.45,23.48];
+  const TW_CENTER=[120.95,23.7];
+  const CITIES=[
+    ["東京","Tokyo",139.69,35.69],["首爾","Seoul",126.98,37.57],["新加坡","Singapore",103.82,1.35],
+    ["雪梨","Sydney",151.21,-33.87],["奧克蘭","Auckland",174.76,-36.85],["孟買","Mumbai",72.88,19.08],
+    ["杜拜","Dubai",55.27,25.2],["約翰尼斯堡","Johannesburg",28.05,-26.2],["法蘭克福","Frankfurt",8.68,50.11],
+    ["倫敦","London",-0.13,51.51],["舊金山","San Francisco",-122.42,37.77],["墨西哥城","Mexico City",-99.13,19.43],
+    ["多倫多","Toronto",-79.38,43.65],["紐約","New York",-74.0,40.71]
+  ];
+  const land={type:"Feature",geometry:GEO.land}, tw={type:"Feature",geometry:GEO.tw};
+  const proj=d3.geoNaturalEarth1().rotate([-150,0]).precision(0.2);
+  const path=d3.geoPath(proj,ctx);
+  const grat=d3.geoGraticule10();
+  // dot matrix of land
+  const DOTS=[]; const step=1.7;
+  for(let lat=-56;lat<=78;lat+=step){
+    const s=step/Math.cos(lat*Math.PI/180);
+    for(let lon=-180;lon<180;lon+=s){ if(d3.geoContains(land,[lon,lat])) DOTS.push([lon,lat]); }
+  }
+  const ARCS=CITIES.map((c,i)=>{const it=d3.geoInterpolate(ORIGIN,[c[2],c[3]]);const pts=[];for(let k=0;k<=80;k++)pts.push(it(k/80));
+    return {c,pts,start:3000+i*170+ (i%3)*90,dur:1500+d3.geoDistance(ORIGIN,[c[2],c[3]])*380};});
+  let W=0,H=0,dpr=1,s0=1,sIn=1,narrow=false;
+  const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  const C={gold:css("--gold"),hi:css("--gold-hi"),paper:css("--paper"),muted:css("--muted"),line:css("--line")};
+  function size(){
+    const r=box.getBoundingClientRect(); W=r.width; H=r.height; dpr=Math.min(2,window.devicePixelRatio||1);
+    canvas.width=Math.round(W*dpr); canvas.height=Math.round(H*dpr);
+    narrow=W<760;
+    proj.scale(1).translate([0,0]);
+    const b=d3.geoPath(proj).bounds({type:"Sphere"}); const bw=b[1][0]-b[0][0], bh=b[1][1]-b[0][1];
+    s0= narrow? Math.max(W/bw,H/bh)*1.15 : Math.min(W/bw,H/bh)*1.02;
+    const tb=d3.geoPath(proj).bounds(tw); const th=tb[1][1]-tb[0][1];
+    sIn=(H*0.66)/th;
+  }
+  function view(scale,focus,target){proj.scale(scale).translate([0,0]);const p=proj(focus);proj.translate([target[0]-p[0],target[1]-p[1]]);}
+  const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+  const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+  let t0=performance.now(), visible=true, raf=0;
+  function frame(now){
+    const t=reduce?20000:now-t0;
+    draw(t);
+    if(!reduce && visible) raf=requestAnimationFrame(frame);
+  }
+  function draw(t){
+    ctx.setTransform(dpr,0,0,dpr,0,0); ctx.clearRect(0,0,W,H);
+    const z=ease(clamp((t-1900)/2400));               // zoom-out progress
+    const scale=sIn*Math.pow(s0/sIn,z);
+    const worldFocus= narrow? [128,22] : [150,8];
+    const focus=[TW_CENTER[0]+(worldFocus[0]-TW_CENTER[0])*z, TW_CENTER[1]+(worldFocus[1]-TW_CENTER[1])*z];
+    const tgtIn= narrow?[W*0.5,H*0.5]:[W*0.64,H*0.46];
+    const tgtOut= narrow?[W*0.5,H*0.56]:[W*0.54,H*0.44];
+    view(scale,focus,[tgtIn[0]+(tgtOut[0]-tgtIn[0])*z, tgtIn[1]+(tgtOut[1]-tgtIn[1])*z]);
+    // graticule + sphere
+    ctx.lineWidth=1; ctx.strokeStyle="rgba(140,170,215,0.07)"; ctx.beginPath(); path(grat); ctx.stroke();
+    ctx.strokeStyle="rgba(140,170,215,"+(0.18*z)+")"; ctx.beginPath(); path({type:"Sphere"}); ctx.stroke();
+    // faint land (context while zoomed)
+    ctx.fillStyle="rgba(120,150,195,"+(0.10+0.04*(1-z))+")"; ctx.beginPath(); path(land); ctx.fill();
+    // dot matrix
+    const da=clamp((t-2300)/1600);
+    if(da>0){
+      const r=clamp(0.55*scale/s0*1.6,0.7,1.6);
+      ctx.fillStyle="rgba(170,190,225,"+(0.42*da)+")";
+      ctx.beginPath();
+      for(const d of DOTS){const p=proj(d); if(!p) continue; if(p[0]<-4||p[0]>W+4||p[1]<-4||p[1]>H+4) continue; ctx.moveTo(p[0]+r,p[1]); ctx.arc(p[0],p[1],r,0,6.283);}
+      ctx.fill();
+    }
+    // Taiwan outline drawing
+    const draw1=ease(clamp((t-200)/1500));
+    ctx.beginPath(); path(tw);
+    ctx.fillStyle="rgba(217,174,91,"+(0.22*draw1)+")"; ctx.fill();
+    const per=d3.geoPath(proj).measure(tw);
+    ctx.setLineDash([per*draw1, per+10]); ctx.lineWidth=Math.max(1, 2.2*(1-z)+1); ctx.strokeStyle=C.hi; ctx.stroke(); ctx.setLineDash([]);
+    // arcs
+    const o=proj(ORIGIN); let done=0;
+    ctx.lineCap="round";
+    for(const a of ARCS){
+      const p=clamp((t-a.start)/a.dur); if(p<=0) continue;
+      const e=ease(p); const n=Math.max(2,Math.round(e*80));
+      const line={type:"LineString",coordinates:a.pts.slice(0,n+1)};
+      // glow
+      ctx.strokeStyle="rgba(217,174,91,0.16)"; ctx.lineWidth=5; ctx.beginPath(); path(line); ctx.stroke();
+      ctx.strokeStyle= p<1? C.hi : "rgba(244,215,149,0.75)"; ctx.lineWidth=1.3; ctx.beginPath(); path(line); ctx.stroke();
+      const end=proj(a.pts[n]);
+      if(p<1){ if(end){ctx.fillStyle="#fff";ctx.beginPath();ctx.arc(end[0],end[1],2.4,0,6.283);ctx.fill();} }
+      else {
+        done++;
+        // traveling pulse
+        if(!reduce){const ph=((t-a.start-a.dur)/ (2600+a.dur*.6) + a.start/1000)%1; const pp=proj(a.pts[Math.floor(ph*80)]);
+          if(pp){ctx.fillStyle="rgba(255,240,205,.9)";ctx.beginPath();ctx.arc(pp[0],pp[1],1.8,0,6.283);ctx.fill();}}
+        const cp=proj([a.c[2],a.c[3]]);
+        if(cp){
+          const k=clamp((t-a.start-a.dur)/600);
+          ctx.strokeStyle="rgba(244,215,149,"+(0.6*k)+")"; ctx.lineWidth=1; ctx.beginPath(); ctx.arc(cp[0],cp[1],4.5,0,6.283); ctx.stroke();
+          ctx.fillStyle=C.hi; ctx.beginPath(); ctx.arc(cp[0],cp[1],2,0,6.283); ctx.fill();
+          if(!narrow){ctx.font="500 11px 'Noto Sans TC',sans-serif"; ctx.fillStyle="rgba(236,229,211,"+(0.8*k)+")"; ctx.fillText(a.c[0],cp[0]+7,cp[1]-6);}
+        }
+      }
+    }
+    document.getElementById("routeCount").textContent=done;
+    // Chiayi origin
+    const oa=clamp((t-1100)/500);
+    if(o && oa>0){
+      if(!reduce){for(let i=0;i<3;i++){const ph=((t/2200)+i/3)%1; ctx.strokeStyle="rgba(244,215,149,"+(0.55*(1-ph)*oa)+")"; ctx.lineWidth=1.2; ctx.beginPath(); ctx.arc(o[0],o[1],4+ph*26,0,6.283); ctx.stroke();}}
+      ctx.fillStyle="#FFF6DD"; ctx.beginPath(); ctx.arc(o[0],o[1],4,0,6.283); ctx.fill();
+      ctx.strokeStyle=C.gold; ctx.lineWidth=2; ctx.beginPath(); ctx.arc(o[0],o[1],7,0,6.283); ctx.stroke();
+      const la=oa*(1-clamp((t-2200)/900));
+      if(la>0){
+        ctx.strokeStyle="rgba(244,215,149,"+la+")"; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(o[0]-10,o[1]); ctx.lineTo(o[0]-70,o[1]); ctx.stroke();
+        ctx.textAlign="right"; ctx.fillStyle="rgba(244,215,149,"+la+")"; ctx.font="900 20px 'Noto Serif TC',serif"; ctx.fillText("嘉義",o[0]-78,o[1]+2);
+        ctx.font="400 11px 'JetBrains Mono',monospace"; ctx.fillStyle="rgba(236,229,211,"+(0.8*la)+")"; ctx.fillText("CHIAYI · HQ",o[0]-78,o[1]+20); ctx.textAlign="left";
+      } else if(!narrow){
+        ctx.font="700 12px 'Noto Sans TC',sans-serif"; ctx.fillStyle=C.hi; ctx.fillText("嘉義 HQ",o[0]+10,o[1]+16);
+      }
+    }
+  }
+  size();
+  new ResizeObserver(()=>{size(); if(reduce) draw(20000);}).observe(box);
+  new IntersectionObserver(es=>{visible=es[0].isIntersecting; if(visible&&!reduce){cancelAnimationFrame(raf);raf=requestAnimationFrame(frame);}}).observe(box);
+  document.getElementById("replay").addEventListener("click",()=>{t0=performance.now(); if(reduce){draw(20000);} });
+  if(reduce){ draw(20000); } else { raf=requestAnimationFrame(frame); }
+  if(document.fonts&&document.fonts.ready) document.fonts.ready.then(()=>{ if(reduce) draw(20000); });
+})();
+</script>
+
+</body>
+</html>
