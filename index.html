@@ -118,19 +118,9 @@ section.block{padding-block:96px 24px}
   .stop .pin{grid-row:span 5}
 }
 
-/* faculty */
-.faculty{display:grid;grid-template-columns:minmax(0,320px) minmax(0,1fr);gap:28px;align-items:start}
-.roster{display:grid;gap:10px;position:sticky;top:84px}
-.rbtn{display:grid;grid-template-columns:48px minmax(0,1fr);gap:14px;align-items:center;text-align:left;background:var(--ink-2);border:1px solid var(--line);border-radius:14px;padding:12px 14px;cursor:pointer;transition:border-color .2s,background .2s}
-.rbtn:hover{border-color:color-mix(in srgb,var(--c) 60%,var(--line))}
-.rbtn[aria-selected="true"]{border-color:var(--c);background:var(--ink-3);box-shadow:inset 3px 0 0 var(--c)}
-.rbtn .av{width:48px;height:48px;border-radius:50%;border:2px solid var(--c);display:grid;place-items:center;font-family:var(--f-display);font-weight:900;font-size:20px;color:var(--c)}
-.rbtn b{display:block;font-size:17px;font-weight:700}
-.rbtn small{display:block;color:var(--muted);font-size:13px;line-height:1.5}
 .profile{background:var(--ink-2);border:1px solid var(--line);border-radius:20px;padding:clamp(22px,3.4vw,40px);display:grid;gap:30px;min-width:0;position:relative;overflow:hidden}
 .profile::after{content:attr(data-big);position:absolute;right:-10px;top:-40px;font-family:var(--f-display);font-weight:900;font-size:260px;line-height:1;color:var(--c);opacity:.06;pointer-events:none}
 .p-top{display:grid;grid-template-columns:auto minmax(0,1fr);gap:22px;align-items:center}
-.p-av{width:96px;height:96px;border-radius:50%;background:radial-gradient(circle at 35% 30%,color-mix(in srgb,var(--c) 40%,var(--ink-3)),var(--ink));border:3px solid var(--c);display:grid;place-items:center;font-family:var(--f-display);font-weight:900;font-size:42px;color:var(--paper)}
 .p-role{font-family:var(--f-mono);font-size:12px;letter-spacing:.14em;color:var(--c);text-transform:uppercase}
 .p-name{font-family:var(--f-display);font-weight:900;font-size:clamp(30px,4vw,42px);line-height:1.15;margin-top:2px}
 .p-pos{color:#C5CCD8;margin-top:8px;max-width:56ch}
@@ -155,18 +145,33 @@ section.block{padding-block:96px 24px}
 .fade-in{animation:fadeUp .5s ease both}
 @keyframes fadeUp{from{opacity:.0;transform:translateY(8px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion: reduce){.fade-in{animation:none}}
-@media (max-width:900px){
-  .faculty{grid-template-columns:1fr}
-  .roster{position:static}
-  .roster{grid-template-columns:repeat(2,minmax(0,1fr))}
-}
-@media (max-width:480px){
-  .roster{grid-template-columns:1fr 1fr;gap:8px}
-  .rbtn{grid-template-columns:1fr;justify-items:start;gap:8px}
-  .rbtn small{display:none}
-  .p-top{grid-template-columns:1fr}
-  .p-av{width:72px;height:72px;font-size:32px}
-}
+/* lecturers: click a card, the intro opens below */
+.lect-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:10px 24px;margin-top:72px;margin-bottom:20px;scroll-margin-top:84px}
+.lect-head h3{font-family:var(--f-display);font-weight:900;font-size:clamp(26px,3.4vw,38px);line-height:1.25}
+.lect-head h3 em{font-style:normal;color:var(--gold)}
+.lect-head p{color:var(--muted);font-size:15px}
+.gallery .lect{all:unset;box-sizing:border-box;position:relative;cursor:pointer;border-radius:14px;overflow:hidden;border:2px solid var(--line);aspect-ratio:4/5;max-width:100%;background:#E9EEF0;transition:transform .2s,border-color .2s,opacity .25s,filter .25s}
+.gallery .lect img{width:100%;height:100%;object-fit:cover;object-position:100% 0;display:block}
+.gallery .lect .tag{position:absolute;left:0;right:0;bottom:0;display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:36px 14px 12px;background:linear-gradient(to top,rgba(11,22,38,.92),rgba(11,22,38,0));color:var(--paper);font-size:18px;font-weight:700;font-family:var(--f-display)}
+.gallery .lect .tag small{font-family:var(--f-body);font-weight:500;font-size:13px;letter-spacing:.04em;color:var(--c);white-space:nowrap}
+.gallery .lect:hover{transform:translateY(-3px);border-color:var(--c)}
+.gallery .lect:focus-visible{outline:2px solid var(--gold-hi);outline-offset:3px}
+.gallery .lect[aria-selected="true"]{border-color:var(--c);transform:translateY(-3px);box-shadow:0 14px 34px rgba(0,0,0,.35)}
+.gallery.has-sel .lect[aria-selected="false"]{opacity:.55;filter:saturate(.6)}
+.gallery.has-sel .lect[aria-selected="false"]:hover{opacity:.9;filter:none}
+#profile{margin-top:18px}
+.p-body{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,3.5vw,44px);align-items:start;position:relative;z-index:1}
+.card-fig{margin:0;position:relative;border-radius:14px;overflow:hidden;border:2px solid var(--c);background:#F4F2EE;aspect-ratio:1672/941;max-width:100%;box-shadow:0 18px 40px rgba(0,0,0,.35)}
+.card-fig button{all:unset;display:block;width:100%;height:100%;cursor:zoom-in}
+.card-fig img{width:100%;height:100%;object-fit:cover;display:block}
+.card-fig figcaption{position:absolute;right:10px;bottom:10px;font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;background:rgba(11,22,38,.78);color:var(--paper);padding:4px 10px;border-radius:999px;pointer-events:none}
+@media (min-width:901px){.card-fig{position:sticky;top:84px}}
+@media (max-width:900px){.p-body{grid-template-columns:1fr}}
+.p-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
+.p-tools{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.p-tools button{background:none;border:1px solid var(--line);border-radius:999px;padding:6px 13px;cursor:pointer;color:var(--muted);font-size:13px;white-space:nowrap}
+.p-tools button:hover{color:var(--paper);border-color:var(--c)}
+@media (max-width:560px){.gallery .lect .tag{font-size:16px;padding:28px 10px 10px}.p-head{flex-direction:column-reverse}.p-tools{justify-content:flex-start}}
 
 /* finale */
 .finale{position:relative;overflow:hidden;border-radius:24px;border:1px solid var(--line);background:radial-gradient(90% 120% at 50% 0%,#17325A 0%,var(--ink-2) 70%);padding-block:clamp(48px,7vw,84px);padding-inline:clamp(20px,5vw,64px);display:grid;justify-items:center;text-align:center;gap:18px}
@@ -178,6 +183,26 @@ section.block{padding-block:96px 24px}
 .finale h2 span{color:var(--gold)}
 .finale p{color:#CFD5DF;font-size:17px}
 .go{margin-top:14px;background:var(--gold);color:#1A1405;border:0;border-radius:12px;padding:16px 28px;font-family:var(--f-brand);font-weight:800;font-size:clamp(18px,2.4vw,24px);letter-spacing:.06em;cursor:default;box-shadow:0 10px 30px rgba(217,174,91,.22)}
+/* CEO message */
+.ceo{padding-block:96px 0}
+.ceo-card{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);border:1px solid var(--line);border-radius:24px;overflow:hidden;background:var(--ink-2)}
+.ceo-photo{position:relative;min-height:420px;background:#DCE9EC url("img/ceo-portrait.jpg") no-repeat 50% 0/cover}
+.ceo-photo::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent 78%,var(--ink-2))}
+.ceo-body{padding:clamp(28px,4.5vw,56px);display:grid;align-content:center;gap:22px;min-width:0}
+.ceo-body blockquote{margin:0;font-family:var(--f-display);font-weight:900;font-size:clamp(22px,2.6vw,32px);line-height:1.6;color:var(--paper);text-wrap:pretty}
+.ceo-body blockquote::before{content:"「";color:var(--gold)}
+.ceo-body blockquote::after{content:"」";color:var(--gold)}
+.ceo-body blockquote b{font-weight:900;color:var(--c);box-shadow:inset 0 -.18em 0 color-mix(in srgb,var(--c) 28%,transparent)}
+.ceo-sign{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:14px 20px;border-top:1px dashed var(--line);padding-top:20px}
+.ceo-sign .nm{font-family:var(--f-display);font-weight:900;font-size:26px;line-height:1.2}
+.ceo-sign .ttl{font-family:var(--f-mono);font-size:12px;letter-spacing:.14em;color:var(--gold);margin-top:4px}
+.ceo-sign button{background:none;border:1px solid var(--line);border-radius:999px;padding:7px 14px;cursor:pointer;color:var(--muted);font-size:14px}
+.ceo-sign button:hover{color:var(--paper);border-color:var(--gold)}
+@media (max-width:820px){
+  .ceo-card{grid-template-columns:1fr}
+  .ceo-photo{min-height:0;aspect-ratio:1/1;max-width:100%;background-position:50% 0}
+  .ceo-photo::after{background:linear-gradient(180deg,transparent 70%,var(--ink-2))}
+}
 .film{padding-block:72px 0}
 .film-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:12px 24px;margin-bottom:22px}
 .film-head h2{font-family:var(--f-display);font-weight:900;font-size:clamp(26px,3.4vw,38px);line-height:1.25}
@@ -194,6 +219,12 @@ section.block{padding-block:96px 24px}
 @media (prefers-reduced-motion: reduce){.player .play .ring{animation:none}}
 .film-head h2 em{display:inline-block}
 @media (max-width:560px){.player .play span:not(.ring){display:none}}
+.face{background-color:var(--ink-3);background-image:var(--img);background-size:643%;background-position:var(--fx) var(--fy);background-repeat:no-repeat;color:transparent!important;font-size:0!important}
+.gallery{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+@media (max-width:900px){.gallery{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.lb{position:fixed;inset:0;z-index:100;background:rgba(5,10,20,.88);display:grid;place-items:center;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.lb img{max-width:min(1400px,100%);max-height:86vh;border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.lb .x{position:absolute;top:calc(14px + env(safe-area-inset-top,0px));right:calc(16px + env(safe-area-inset-right,0px));background:var(--ink-2);border:1px solid var(--line);border-radius:999px;padding:6px 14px;cursor:pointer;color:var(--paper)}
 footer{border-top:1px solid var(--line);margin-top:96px}
 footer .wrap{padding-block:32px 40px;display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:center;color:var(--muted);font-size:13px}
 </style>
@@ -206,8 +237,9 @@ footer .wrap{padding-block:32px 40px;display:flex;flex-wrap:wrap;gap:16px;justif
     <a class="brand" href="#top"><b>T<i>-</i>MOVE</b><span>LEARNING TRANSFER CONSULTING</span></a>
     <nav aria-label="主要區塊">
       <a href="#film">宣傳影片</a>
+      <a href="#ceo">執行長</a>
       <a href="#team">顧問服務</a>
-      <a href="#faculty">專業講師</a>
+      <a href="#lecturers">專業講師</a>
       <a href="#workshop">工作坊</a>
     </nav>
   </div>
@@ -230,7 +262,7 @@ footer .wrap{padding-block:32px 40px;display:flex;flex-wrap:wrap;gap:16px;justif
         <p class="lede">T-Move 整合訓練移轉（Training Transfer）、成人學習與組織績效評估的研究觀點，建構以策略對齊、成效驗證、學習移轉及人才文化為核心的四大顧問服務架構，協助組織從學習需求出發，實現工作行為改變與持續績效提升。</p>
         <div class="ctas">
           <a class="btn primary" href="#team">認識我們的顧問團隊</a>
-          <a class="btn" href="#faculty">探索專業講師</a>
+          <a class="btn" href="#lecturers">探索專業講師</a>
           <a class="btn" href="#film" id="heroPlay"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M4 2.5v11l9-5.5z"/></svg> 觀看宣傳影片</a>
           <a class="btn" href="#workshop">開始訓練移轉工作坊 <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
         </div>
@@ -262,6 +294,24 @@ footer .wrap{padding-block:32px 40px;display:flex;flex-wrap:wrap;gap:16px;justif
   </section>
 
 <main>
+  <section class="ceo" id="ceo">
+    <div class="wrap">
+      <div class="eyebrow">A Message from Our CEO</div>
+      <div class="ceo-card">
+        <div class="ceo-photo" role="img" aria-label="T-Move 執行長李藹慈"></div>
+        <div class="ceo-body">
+          <blockquote>從組織<b style="--c:var(--gold)">策略</b>出發，整合<b style="--c:var(--lilac)">人才</b>、<b style="--c:var(--teal)">數據</b>與<b style="--c:var(--coral)">執行</b>能量，建立系統化訓練移轉機制，讓每一項學習投資，都能轉化為組織績效。</blockquote>
+          <div class="ceo-sign">
+            <div>
+              <div class="nm">李藹慈</div>
+              <div class="ttl">執行長・CHIEF EXECUTIVE OFFICER</div>
+            </div>
+            <button type="button" data-zoom="img/ceo.jpg" aria-label="放大李藹慈執行長的介紹卡">放大介紹卡<img src="img/ceo.jpg" alt="李藹慈・執行長介紹卡" hidden></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
   <section class="block" id="team">
     <div class="wrap">
       <div class="sec-head">
@@ -269,26 +319,18 @@ footer .wrap{padding-block:32px 40px;display:flex;flex-wrap:wrap;gap:16px;justif
           <div class="eyebrow">Our Consulting Team</div>
           <h2>一條路線，<em>四個站點</em></h2>
         </div>
-        <p>學習要真正移轉到工作現場，需要在訓練前、訓練中、回到現場與後續追蹤都有人把關。T-Move 的四位顧問各自負責一個站點，串成一條完整的移轉路線。點選顧問，認識他們的完整介紹。</p>
+        <p>學習要真正移轉到工作現場，需要在訓練前、訓練中、回到現場與後續追蹤都有人把關。T-Move 的四位顧問各自負責一個站點，串成一條完整的移轉路線。</p>
       </div>
       <div class="route" id="route" style="scroll-margin-top:96px"></div>
-      <div class="gallery" id="gallery" aria-label="顧問工作坊介紹卡"></div>
-    </div>
-  </section>
-
-  <section class="block" id="faculty">
-    <div class="wrap">
-      <div class="sec-head">
+      <div class="lect-head" id="lecturers">
         <div>
           <div class="eyebrow">Meet the Faculty</div>
-          <h2>探索<em>專業講師</em></h2>
+          <h3>探索<em>專業講師</em></h3>
         </div>
-        <p>每位講師都用同一段旅程介紹自己：從哪裡出發、帶著什麼專長上路，以及想帶你抵達哪裡。</p>
+        <p id="lectHint">點選講師照片，看他的完整自我介紹。</p>
       </div>
-      <div class="faculty">
-        <div class="roster" role="tablist" aria-label="講師名單" id="roster"></div>
-        <article class="profile" id="profile" role="tabpanel" aria-live="polite"></article>
-      </div>
+      <div class="gallery" id="gallery" role="tablist" aria-label="專業講師"></div>
+      <article class="profile" id="profile" role="tabpanel" hidden></article>
     </div>
   </section>
 
@@ -379,11 +421,9 @@ route.innerHTML = PEOPLE.map((p,i)=>`
     <p>${p.serviceDesc}</p>
     <button class="who" type="button" data-go="${p.id}"><span class="av face" style="${faceStyle(p)}" aria-hidden="true">${p.mark}</span><span>${p.name}・${p.type}</span></button>
   </div>`).join("");
-document.getElementById("gallery").innerHTML=PEOPLE.map(p=>`<button type="button" data-zoom="${p.img}" aria-label="放大 ${p.name} 的工作坊介紹卡"><img src="${p.img}" alt="${p.name}・${p.type}工作坊介紹卡" loading="lazy"></button>`).join("");
 route.addEventListener("click",e=>{
   const b=e.target.closest("[data-go]"); if(!b) return;
-  select(b.dataset.go,true);
-  document.getElementById("faculty").scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});
+  select(b.dataset.go,{scroll:true});
 });
 
 /* lightbox */
@@ -396,52 +436,71 @@ document.addEventListener("click",e=>{
   const lb=e.target.closest(".lb"); if(lb && (e.target===lb||e.target.closest(".x"))){ lb.remove(); lastFocus&&lastFocus.focus(); }
 });
 document.addEventListener("keydown",e=>{ if(e.key==="Escape"){const lb=document.querySelector(".lb"); if(lb){lb.remove(); lastFocus&&lastFocus.focus();}} });
-/* ---------------- faculty ---------------- */
-const roster=document.getElementById("roster"), profile=document.getElementById("profile");
-roster.innerHTML = PEOPLE.map(p=>`
-  <button class="rbtn" role="tab" id="tab-${p.id}" data-id="${p.id}" style="--c:${p.color}" aria-selected="false">
-    <span class="av" aria-hidden="true">${p.mark}</span>
-    <span><b>${p.name}</b><small>${p.type}｜${p.service}</small></span>
+/* ---------------- lecturers: click a photo, the intro opens below ---------------- */
+const gallery=document.getElementById("gallery"), profile=document.getElementById("profile"), lectHint=document.getElementById("lectHint");
+const smooth=()=>matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth";
+gallery.innerHTML=PEOPLE.map(p=>`
+  <button class="lect" type="button" role="tab" id="tab-${p.id}" data-id="${p.id}" style="--c:${p.color}" aria-selected="false" aria-controls="profile">
+    <img src="${p.img}" alt="${p.name}・${p.type}" loading="lazy">
+    <span class="tag"><span>${p.name}</span><small>${p.type}</small></span>
   </button>`).join("");
-let current=0;
-function select(id,focus){
-  const i=PEOPLE.findIndex(p=>p.id===id); if(i<0) return; current=i; const p=PEOPLE[i];
-  roster.querySelectorAll(".rbtn").forEach(b=>b.setAttribute("aria-selected", b.dataset.id===id));
+let current=-1;
+function closeProfile(){
+  current=-1; profile.hidden=true; gallery.classList.remove("has-sel");
+  gallery.querySelectorAll(".lect").forEach(b=>b.setAttribute("aria-selected","false"));
+  lectHint.textContent="點選講師照片，看他的完整自我介紹。";
+}
+function select(id,opt={}){
+  const i=PEOPLE.findIndex(p=>p.id===id); if(i<0) return;
+  if(i===current && opt.toggle){ closeProfile(); return; }
+  current=i; const p=PEOPLE[i];
+  gallery.classList.add("has-sel");
+  gallery.querySelectorAll(".lect").forEach(b=>b.setAttribute("aria-selected", b.dataset.id===id));
+  lectHint.textContent="再點一次照片可收起介紹。";
+  profile.hidden=false;
   profile.style.setProperty("--c",p.color);
   profile.dataset.big=p.mark;
   profile.setAttribute("aria-labelledby","tab-"+p.id);
   const paras=a=>a.map(t=>`<p>${t}</p>`).join("");
   profile.innerHTML=`
-    <div class="p-top fade-in">
-      <div class="p-av face" style="${faceStyle(p)}" aria-hidden="true">${p.mark}</div>
+    <div class="p-head fade-in">
       <div>
         <div class="p-role">${p.role}・${p.type}</div>
         <h3 class="p-name">${p.name}</h3>
         <p class="p-pos">${p.pos}</p>
       </div>
+      <div class="p-tools">
+        <button type="button" data-close>收起 ✕</button>
+      </div>
     </div>
-    <figure class="card-fig fade-in"><button type="button" data-zoom="${p.img}" aria-label="放大 ${p.name} 的工作坊介紹卡"><img src="${p.img}" alt="${p.name}・${p.type}工作坊介紹卡"></button><figcaption>工作坊介紹卡・點擊放大</figcaption></figure>
-    <div class="legs fade-in" style="animation-delay:.08s">
-      <div class="leg"><span class="dot"></span><div><h4>出發點<span>關於我</span></h4>${paras(p.me)}</div></div>
-      <div class="leg"><span class="dot"></span><div><h4>隨身行囊<span>我擅長的事</span></h4>${paras(p.talent)}</div></div>
-      <div class="leg"><span class="dot"></span><div><h4>抵達之處<span>我想帶你去的地方</span></h4>${paras(p.value)}</div></div>
+    <div class="p-body">
+      <figure class="card-fig fade-in"><button type="button" data-zoom="${p.img}" aria-label="放大 ${p.name} 的工作坊介紹卡"><img src="${p.img}" alt="${p.name}・${p.type}工作坊介紹卡"></button><figcaption>點擊圖片可放大</figcaption></figure>
+      <div class="legs fade-in" style="animation-delay:.06s">
+        <div class="leg"><span class="dot"></span><div><h4>出發點<span>關於我</span></h4>${paras(p.me)}</div></div>
+        <div class="leg"><span class="dot"></span><div><h4>隨身行囊<span>我擅長的事</span></h4>${paras(p.talent)}</div></div>
+        <div class="leg"><span class="dot"></span><div><h4>抵達之處<span>我想帶你去的地方</span></h4>${paras(p.value)}</div></div>
+      </div>
     </div>
-    <p class="slogan fade-in" style="animation-delay:.16s">${p.slogan}</p>
+    <p class="slogan fade-in" style="animation-delay:.12s">${p.slogan}</p>
     <div class="p-nav">
       <button type="button" data-step="-1">← ${PEOPLE[(i+3)%4].name}</button>
       <span class="mono">${i+1} / 4</span>
       <button type="button" data-step="1">${PEOPLE[(i+1)%4].name} →</button>
     </div>`;
-  if(focus) document.getElementById("tab-"+id).focus({preventScroll:true});
+  if(opt.focus) document.getElementById("tab-"+id).focus({preventScroll:true});
+  if(opt.scroll) document.getElementById("lecturers").scrollIntoView({behavior:smooth(),block:"start"});
+  else { const r=profile.getBoundingClientRect(); if(r.top>innerHeight*0.7) profile.scrollIntoView({behavior:smooth(),block:"nearest"}); }
 }
-roster.addEventListener("click",e=>{const b=e.target.closest(".rbtn"); if(b) select(b.dataset.id);});
-roster.addEventListener("keydown",e=>{
-  if(!["ArrowDown","ArrowUp","ArrowLeft","ArrowRight"].includes(e.key)) return;
-  e.preventDefault(); const d=(e.key==="ArrowDown"||e.key==="ArrowRight")?1:-1;
-  select(PEOPLE[(current+d+4)%4].id,true);
+gallery.addEventListener("click",e=>{const b=e.target.closest(".lect"); if(b) select(b.dataset.id,{toggle:true});});
+gallery.addEventListener("keydown",e=>{
+  if(!["ArrowLeft","ArrowRight"].includes(e.key)) return;
+  e.preventDefault(); const d=e.key==="ArrowRight"?1:-1;
+  select(PEOPLE[((current<0?0:current)+d+4)%4].id,{focus:true});
 });
-profile.addEventListener("click",e=>{const b=e.target.closest("[data-step]"); if(b) select(PEOPLE[(current+ +b.dataset.step+4)%4].id);});
-select("wu");
+profile.addEventListener("click",e=>{
+  if(e.target.closest("[data-close]")){ const id=PEOPLE[current].id; closeProfile(); document.getElementById("tab-"+id).focus({preventScroll:true}); return; }
+  const b=e.target.closest("[data-step]"); if(b) select(PEOPLE[(current+ +b.dataset.step+4)%4].id);
+});
 
 /* ---------------- promo film ---------------- */
 (function(){
